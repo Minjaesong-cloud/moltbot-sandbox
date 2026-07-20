@@ -62,6 +62,18 @@ def vol_weight(r, ppy):
     rv = float(r.rolling(win).std().iloc[-1]) * np.sqrt(ppy)
     return min(VOL_TARGET/rv, MAX_LEVER) if np.isfinite(rv) and rv > 0 else 0.0  # 최종: 변동성 타깃
 
+RISK_ASSETS = {'US_EQ','KR_EQ','JP_EQ','BTC','KRW'}   # FSI 게이트 대상 (채권·원유 제외 — 다자산 검증)
+
+def fsi_gate():
+    """스트레스 게이트: OFR FSI>0 → 위험자산 0.5배. 6개 자산 검증 — MaxDD 전부 개선,
+    샤프는 위험자산만 개선(채권은 악화 → 제외). 근거: backtests/VOLATILITY-SIGNALS.md"""
+    try:
+        from fetch_data import ofr_fsi
+        f = ofr_fsi()['OFR FSI'].dropna()
+        return float(f.iloc[-1]), (0.5 if f.iloc[-1] > 0 else 1.0)
+    except Exception:
+        return np.nan, 1.0
+
 def cot_adjust():
     """3차 보조: E-mini S&P 투기 z. 과열(z>2) 시 주식 슬리브 0.75배, 위축(z<-1) 시 1.1배."""
     try:
@@ -89,17 +101,19 @@ def valuation_context():
 def target_portfolio():
     assets = load_universe()
     cotz, cot_adj = cot_adjust()
+    fsi_val, fsi_adj = fsi_gate()
     today = max(a['r'].index[-1] for a in assets.values())
     rows=[]
     for name, a in assets.items():
         on   = trend_on(a['lvl'])
         base = vol_weight(a['r'], a['ppy'])
-        adj  = cot_adj if name.endswith('_EQ') else 1.0
+        adj  = (cot_adj if name.endswith('_EQ') else 1.0) * (fsi_adj if name in RISK_ASSETS else 1.0)
         tgt  = round(base*adj,3) if on else 0.0
         rows.append(dict(자산=name, 추세=('ON' if on else 'OFF'),
-                         변동성타깃웨이트=round(base,3), COT조정=adj, 목표비중=tgt,
+                         변동성타깃웨이트=round(base,3), 조정=round(adj,2), 목표비중=tgt,
                          데이터기준=str(a['r'].index[-1].date())))
     port=pd.DataFrame(rows)
+    port.attrs['fsi'] = fsi_val
     gross=port['목표비중'].sum()
     if gross>2.0:   # 총 그로스 상한 (Carver: 리스크는 자본이 아니라 변동성으로)
         port['목표비중']=(port['목표비중']/gross*2.0).round(3)
@@ -113,13 +127,11 @@ if __name__=='__main__':
     if '내재ERP' in v:
         print(f"\n밸류에이션(2차·예산): 내재 ERP {v['내재ERP']:.2%} vs 10년평균 {v['10년평균ERP']:.2%} "
               f"({v['기준월']}) | 주식 기대수익 {v['기대수익률']:.2%}\n  → {v['해석']}")
-    try:  # 스트레스 레짐(참고 레이어): FSI>0 → 0.5배 게이트가 NASDAQ MaxDD -52%→-30% (VOLATILITY-SIGNALS.md)
-        from fetch_data import ofr_fsi
-        f = ofr_fsi()['OFR FSI'].dropna()
-        print(f"스트레스(OFR FSI, {f.index[-1].date()}): {f.iloc[-1]:+.2f} "
-              f"({'⚠ 평균 이상 스트레스 — 주식 절반 축소 고려(단일시장 검증)' if f.iloc[-1]>0 else '정상(평균 이하)'})")
-    except Exception:
-        pass
+    fsi_val = port.attrs.get('fsi', np.nan)
+    if np.isfinite(fsi_val):
+        print(f"스트레스(OFR FSI): {fsi_val:+.2f} — "
+              f"{'⚠ 스트레스 레짐: 위험자산(주식·BTC·KRW) 0.5배 적용 중' if fsi_val>0 else '정상 레짐(게이트 미발동)'}"
+              " [6자산 검증: MaxDD 전부 개선, 채권·원유는 게이트 제외]")
     print(f"\n총 그로스: {port['목표비중'].sum():.2f} (상한 2.0)")
     print("근거: 추세=10개월 이평(자산군·152년 검증, KOSPI·BTC 포함) / 사이징=변동성 타깃 10%(글로벌 CTA 샤프 1.06)")
     print("     / COT=보조 필터(약한 역발상) / 밸류에이션은 연간 배분 예산으로 별도 반영")
