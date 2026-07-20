@@ -95,6 +95,16 @@
   → `../backtests/KOREA-DAILY.md`. ⚠ 비공식 엔드포인트(차단 리스크) — 엔진은 OECD 월별 폴백 내장.
 - KRX 정보데이터시스템(data.krx.co.kr)은 이 환경에서 차단 확인.
 
+### 키 기반 API ★2026-07 사용자 키 확보 (`.api_keys.json` — git 제외, 커밋 금지)
+- **한국은행 ECOS** (`ecos()`): 한국 매크로 전체 — 기준금리(722Y001)·국고채금리(817Y002)·
+  환율(731Y001)·M2(101Y004) 등. 검증 완료. FRED의 한국판.
+- **Tiingo** (`tiingo_daily()`): 미국 주식/ETF **수정주가 30년+** (AAPL 1995~ 확인).
+  무료 한도: 시간당 50건·**월 500심볼** — 유니버스 스캔 남용 금지. 검증 완료.
+  → 미국 종목 장기 팩터 백테스트 가능해짐 (STOCK-LEVEL.md 31년 확장).
+- **Finnhub** (`finnhub()`): 실시간 시세·기업뉴스·재무 메트릭. 분당 60건. 검증 완료.
+- **EIA** (`eia()`): ⚠ 2026-07 키 403 — 이메일 활성화 후 재시도 필요.
+- 미보유 확인: 퀀트킹은 공개 API 없음(웹 플랫폼) — 수동 검증 벤치마크로만 사용 가능.
+
 ### 변동성·스트레스·재정 ★2026-07 신규 검증
 - **CBOE VIX 일별 OHLC(1990~)**: `https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv`
   (FRED VIXCLS는 종가만 — CBOE는 OHLC). SKEW도 동일 패턴(`SKEW_History.csv`, 1990~).

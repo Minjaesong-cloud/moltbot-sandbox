@@ -144,6 +144,50 @@ def nasdaq_symbols():
     return pd.read_csv(io.StringIO(raw),sep='|')[:-1]
 
 
+# ---------- 12. 키 기반 API (★2026-07 사용자 키 확보 — .api_keys.json, git 제외) ----------
+def _api_key(name):
+    import os
+    k = os.environ.get(name.upper() + '_API_KEY')
+    if k: return k.strip()
+    p = os.path.join(os.path.dirname(__file__), '.api_keys.json')
+    if os.path.exists(p):
+        return json.load(open(p)).get(name)
+    raise RuntimeError(f"{name} 키 없음: 환경변수 {name.upper()}_API_KEY 또는 data/.api_keys.json")
+
+def ecos(stat='722Y001', cycle='M', start='200001', end='209912', item='0101000', n=1000):
+    """한국은행 ECOS. 예: 기준금리('722Y001',M,item 0101000), 국고채3y('817Y002',D,'010200000'),
+    원달러('731Y001',D,'0000001'), M2('101Y004',M,'BBHA00'). 통계코드는 ecos.bok.or.kr 참조."""
+    url=(f"https://ecos.bok.or.kr/api/StatisticSearch/{_api_key('ecos')}/json/kr/1/{n}/"
+         f"{stat}/{cycle}/{start}/{end}/{item}")
+    rows=json.loads(_get(url))['StatisticSearch']['row']
+    s=pd.Series({r['TIME']: float(r['DATA_VALUE']) for r in rows if r['DATA_VALUE']})
+    fmt={'M':'%Y%m','D':'%Y%m%d','A':'%Y','Q':None}[cycle]
+    if fmt: s.index=pd.to_datetime(s.index,format=fmt)
+    return s.sort_index()
+
+def tiingo_daily(ticker='AAPL', start='1995-01-01', freq='daily'):
+    """Tiingo 미국 주식/ETF 수정주가(30년+). 무료: 시간당 50건·월 500심볼 — 유니버스 남용 금지.
+    freq: daily|weekly|monthly. 반환: DataFrame[adjClose, adjVolume...]"""
+    url=(f"https://api.tiingo.com/tiingo/daily/{ticker}/prices?startDate={start}"
+         f"&resampleFreq={freq}&format=json&token={_api_key('tiingo')}")
+    d=pd.DataFrame(json.loads(_get(url)))
+    d['date']=pd.to_datetime(d['date']).dt.tz_localize(None)
+    return d.set_index('date')
+
+def finnhub(path='quote', **params):
+    """Finnhub (분당 60건). 예: finnhub('quote',symbol='AAPL'), finnhub('stock/metric',symbol='AAPL',metric='all'),
+    finnhub('company-news',symbol='AAPL',**{'from':'2026-07-01','to':'2026-07-20'})"""
+    import urllib.parse
+    q=urllib.parse.urlencode({**params,'token':_api_key('finnhub')})
+    return json.loads(_get(f"https://finnhub.io/api/v1/{path}?{q}"))
+
+def eia(series='PET.WCESTUS1.W', n=100):
+    """EIA 에너지(원유재고 등). ⚠ 2026-07 키 403 — 이메일 활성화 필요할 수 있음. 활성화 후 재시도."""
+    j=json.loads(_get(f"https://api.eia.gov/v2/seriesid/{series}?api_key={_api_key('eia')}&length={n}"))
+    d=j['response']['data']
+    return pd.Series({x['period']: x['value'] for x in d}).sort_index()
+
+
 if __name__=='__main__':
     print("[SEC] Apple 매출·순이익 최근:")
     m=sec_ticker_map(); cik=m['AAPL']
