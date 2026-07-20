@@ -12,6 +12,7 @@ description: 헤지펀드 전략과 퀀트/체계적 투자 전략에 대한 전
 - **Ben Felix** (PWL Capital CIO) — 증거 기반 팩터 투자·인덱스·행동재무학 → `references/experts/ben-felix.md`
 - **Ray Dalio** (Bridgewater 창업자) — 매크로·부채 사이클·빅 사이클 → `references/experts/ray-dalio.md`
 - **Aswath Damodaran** (NYU Stern) — 밸류에이션(가치·디스트레스트·이벤트·액티비스트의 근간) → `references/experts/aswath-damodaran.md`
+- **Robert Carver** (전 Man AHL) — 체계적/시스템 트레이딩(CTA·퀀트 설계, 단순함·분산·사이징) → `references/experts/robert-carver.md`
 
 > 여러 전문가를 추가할 때는 이 파일을 허브로 유지한다: 전문가들이 일치하는 내용은
 > "공통 원칙"으로, 상충하는 내용은 "관점 차이(어떤 상황엔 A, 저런 상황엔 B)"로
@@ -42,9 +43,11 @@ description: 헤지펀드 전략과 퀀트/체계적 투자 전략에 대한 전
 - 변동성 전략 심화(볼아브·디스퍼전·테일헤지·볼셀링, VRP) → `references/volatility-strategies.md`
 - 구조화 크레딧 심화(CLO·CDO·MBS, 상관 거래) → `references/structured-credit.md`
 - 멀티전략·팟 플랫폼 심화(Citadel/Millennium형, stop-out·패스스루) → `references/multi-strategy-pods.md`
+- 통계적 차익거래·페어트레이딩 실전(공적분·팩터중립·퀀트지진) → `references/statistical-arbitrage.md`
+- 크립토·디지털자산 전략(베이시스·펀딩·온체인, 카운터파티 리스크) → `references/crypto-digital-asset.md`
 - 팩터 투자의 학술적 토대(밸류·모멘텀·퀄리티·사이즈·로우볼, 스마트베타) → `references/factor-investing.md`
 - 행동재무학·시장효율성(투자자 편향, EMH, 편향→전략 전환, 자산군 기초) → `references/behavioral-finance.md`
-- 전문가별 심화(증거 기반 투자·팩터 실무 / 매크로·부채 사이클 / 밸류에이션) → `references/experts/ben-felix.md`, `references/experts/ray-dalio.md`, `references/experts/aswath-damodaran.md`
+- 전문가별 심화(증거 기반 투자·팩터 / 매크로·부채 사이클 / 밸류에이션 / 시스템 트레이딩) → `references/experts/ben-felix.md`, `references/experts/ray-dalio.md`, `references/experts/aswath-damodaran.md`, `references/experts/robert-carver.md`
 - Patrick Boyle 원문 인용 모음 → `references/boyle-quotes.md`
 - 출처·수집 방법 → `references/sources.md`
 
@@ -127,7 +130,11 @@ description: 헤지펀드 전략과 퀀트/체계적 투자 전략에 대한 전
 - **분산이 유일한 공짜 점심** (Boyle·Felix·Dalio 모두). 단일 베팅보다 상관 낮은 자산의 조합.
 - **비용·레버리지·상관관계가 실제 성패를 가른다.** 화려한 과거 성과·낮은 변동성 세일즈는
   의심한다(Boyle의 "매끈한 수익→대참사", Felix의 "volatility laundering").
-- **감정을 배제한 사전 규칙(시스템)이 편향을 방어**한다 (Boyle·Felix 공통, behavioral-finance.md).
+- **감정을 배제한 사전 규칙(시스템)이 편향을 방어**한다 (Boyle·Felix·Carver 공통,
+  behavioral-finance.md). Carver: "완전 자동화됐지만 신뢰받지 못하는 시스템은 치명적" —
+  그래서 단순함이 신뢰의 전제.
+- **분산이 유일한 공짜 점심 + 과최적화가 최대 적** (Carver). 백테스트를 절반만 믿고
+  (기대 샤프의 절반으로 사이징), 손절·리스크는 자본이 아니라 변동성·비용으로 정한다.
 - **대부분의 "알파"는 알려진 팩터(베타)로 설명된다.** 진짜 초과수익은 드물고 비싸다.
 
 ### 밸류에이션이라는 공통 하부구조 (Damodaran)

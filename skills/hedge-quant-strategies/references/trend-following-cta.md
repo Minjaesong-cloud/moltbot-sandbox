@@ -40,8 +40,9 @@
 ## 대표 운용사·인물
 
 AHL/Man, Winton(David Harding), Aspect(Martin Lueck), Millburn, Campbell, Chesapeake
-(Jerry Parker, Turtle), Dunn. 학술·실무 가교: Robert Carver(전 Man AHL, "Systematic Trading"),
-AQR(시계열 모멘텀 논문), Kathryn Kaminski(crisis alpha).
+(Jerry Parker, Turtle), Dunn. 학술·실무 가교: **Robert Carver**(전 Man AHL, "Systematic
+Trading" — 시스템 설계 상세는 `experts/robert-carver.md`), AQR(시계열 모멘텀 논문),
+Kathryn Kaminski(crisis alpha).
 
 ## 답변 시 핵심 직관
 

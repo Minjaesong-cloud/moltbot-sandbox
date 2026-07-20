@@ -39,6 +39,9 @@ https://www.youtube.com/@PatrickBoyleOnFinance, 채널 ID `UCASM0cgfkJxQ1ICmRilf
   Valuation 시리즈 등 영상 13편 자막 → `references/experts/aswath-damodaran.md`. 가격 vs
   가치, DCF·멀티플, 스토리와 숫자, 생애주기별 밸류에이션(특히 부실기업), 통제가치. 가치·
   디스트레스트·이벤트드리븐·액티비스트 전략의 펀더멘털 근간.
+- **Robert Carver** (전 Man AHL, 『Systematic Trading』 저자) — 강연 2편 자막
+  ("Simplicity in Systematic Trading", "Diversification of Trading Strategies") →
+  `references/experts/robert-carver.md`. 시스템 트레이딩 설계·과최적화·분산·포지션 사이징.
 - 수집 방법: yt-dlp로 채널 영상 목록을 받아 전략·투자 관련 영상을 선별하고 자동 생성
   영어 자막(VTT)을 다운로드해 텍스트로 정리 후 인사이트 추출.
 - 전문가 간 일치/차이는 SKILL.md의 "전문가 간 공통 원칙 vs 관점 차이" 섹션에 정리.

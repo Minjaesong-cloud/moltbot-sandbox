@@ -162,7 +162,7 @@ laundering** 논쟁(Ben Felix). 유동성·adverse selection 리스크. → refe
 
 **통계적 차익거래** — 미세 이상현상의 통계적 포착(Niederhoffer 계보).
 
-**페어트레이딩** — 공적분 종목쌍 평균회귀(Bamberger→Frey→RenTech).
+**페어트레이딩** — 공적분 종목쌍 평균회귀(Bamberger→Frey→RenTech). → 상세 `statistical-arbitrage.md`.
 
 **고빈도 매매(HFT) / 마켓메이킹** — 유동성 공급으로 스프레드 수취. 엣지=속도·인프라. 캐파=작다.
 
@@ -196,7 +196,7 @@ Prado). 백테스트 신뢰성 문제.
 대재해.
 
 **크립토 / 디지털자산** — 현물-선물 베이시스, 펀딩레이트 차익, 마켓메이킹, 온체인. 리스크=
-카운터파티·규제·해킹(FTX).
+카운터파티·규제·해킹(FTX). → 상세 `crypto-digital-asset.md`.
 
 **로보/양적 배분, 위험균형 TDF 등** — 규칙 기반 자산배분(퀀트와 전통 자산운용의 경계).
 
