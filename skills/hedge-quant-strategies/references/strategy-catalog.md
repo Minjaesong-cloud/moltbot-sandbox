@@ -123,7 +123,7 @@ Dalio의 부채·빅 사이클 프레임(references/experts/ray-dalio.md)이 매
 
 **트렌드추종(Trend Following / Time-Series Momentum)** — 최근 오른 것 롱·내린 것 숏, 자산군
 전반. 엣지=추세 지속. 스큐=**양(작은 손실 다수 + 가끔 큰 수익)**. 예: AHL/Winton, Aspect,
-Man, Millburn.
+Man, Millburn. → 상세 `trend-following-cta.md`.
 
 **카운터트렌드 / 평균회귀** — 추세추종의 반대, 단기 반전 포착.
 
@@ -174,7 +174,8 @@ Prado). 백테스트 신뢰성 문제.
 
 **변동성 타깃팅 / 매니지드 볼** — 실현변동성에 따라 익스포저 조절.
 
-**옵션·변동성 전략** — 디스퍼전, 감마 스캘핑, 볼 아비트라지, 테일 헤지. → options-derivatives.
+**옵션·변동성 전략** — 디스퍼전, 감마 스캘핑, 볼 아비트라지, 테일 헤지. → 상세
+`volatility-strategies.md`, 그릭스·프라이싱은 자매 스킬 options-derivatives.
 
 **시계열 모멘텀** — ⑤ CTA와 겹침, 퀀트 관점의 핵심 프리미엄.
 
