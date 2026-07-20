@@ -13,6 +13,7 @@ description: 헤지펀드 전략과 퀀트/체계적 투자 전략에 대한 전
 - **Ray Dalio** (Bridgewater 창업자) — 매크로·부채 사이클·빅 사이클 → `references/experts/ray-dalio.md`
 - **Aswath Damodaran** (NYU Stern) — 밸류에이션(가치·디스트레스트·이벤트·액티비스트의 근간) → `references/experts/aswath-damodaran.md`
 - **Robert Carver** (전 Man AHL) — 체계적/시스템 트레이딩(CTA·퀀트 설계, 단순함·분산·사이징) → `references/experts/robert-carver.md`
+- **Howard Marks** (Oaktree) — 시장 사이클·디스트레스트·리스크 철학(2차적 사고·역발상) → `references/experts/howard-marks.md`
 
 > 여러 전문가를 추가할 때는 이 파일을 허브로 유지한다: 전문가들이 일치하는 내용은
 > "공통 원칙"으로, 상충하는 내용은 "관점 차이(어떤 상황엔 A, 저런 상황엔 B)"로
@@ -50,7 +51,7 @@ description: 헤지펀드 전략과 퀀트/체계적 투자 전략에 대한 전
 - 실패 사례·리스크 교훈(LTCM~Archegos, "이 전략이 어떻게 죽는가") → `references/failures-risk-lessons.md`
 - 팩터 투자의 학술적 토대(밸류·모멘텀·퀄리티·사이즈·로우볼, 스마트베타) → `references/factor-investing.md`
 - 행동재무학·시장효율성(투자자 편향, EMH, 편향→전략 전환, 자산군 기초) → `references/behavioral-finance.md`
-- 전문가별 심화(증거 기반 투자·팩터 / 매크로·부채 사이클 / 밸류에이션 / 시스템 트레이딩) → `references/experts/ben-felix.md`, `references/experts/ray-dalio.md`, `references/experts/aswath-damodaran.md`, `references/experts/robert-carver.md`
+- 전문가별 심화(증거 기반 투자·팩터 / 매크로 / 밸류에이션 / 시스템 트레이딩 / 사이클·디스트레스트) → `references/experts/` (ben-felix, ray-dalio, aswath-damodaran, robert-carver, howard-marks)
 - Patrick Boyle 원문 인용 모음 → `references/boyle-quotes.md`
 - 출처·수집 방법 → `references/sources.md`
 
@@ -139,6 +140,16 @@ description: 헤지펀드 전략과 퀀트/체계적 투자 전략에 대한 전
 - **분산이 유일한 공짜 점심 + 과최적화가 최대 적** (Carver). 백테스트를 절반만 믿고
   (기대 샤프의 절반으로 사이징), 손절·리스크는 자본이 아니라 변동성·비용으로 정한다.
 - **대부분의 "알파"는 알려진 팩터(베타)로 설명된다.** 진짜 초과수익은 드물고 비싸다.
+
+### 사이클·리스크라는 공통 하부구조 (Howard Marks)
+- **리스크 = 변동성이 아니라 영구적 자본 손실 가능성**, 그리고 **리스크가 없어 보일 때가 가장
+  위험**하다 — 이것이 failures-risk-lessons.md의 붕괴 사례들을 관통하는 렌즈다.
+- **"공급이 수요를 이긴다"**(크레딧 사이클 정점의 매물 폭증)는 디스트레스트·크레딧 전략의
+  타이밍 원리 → structured-credit.md, hedge-fund-strategies.md의 distressed와 연결.
+- **역발상(남이 팔 때 사기)·"you can't predict, you can prepare"**는 매크로 타이밍 회의
+  (Boyle/Felix)와 일치하면서, "예측 대신 준비(방어적 포지셔닝)"라는 실천을 준다.
+- Marks의 **2차적 사고**("가격에 이미 반영됐는가")는 Damodaran의 가격 vs 가치와 같은 동전의
+  양면 — 밸류에이션(가치 추정)과 사이클(심리·가격)이 함께 매수 결정을 만든다.
 
 ### 밸류에이션이라는 공통 하부구조 (Damodaran)
 - **가격 vs 가치 구분**은 거의 모든 전략의 토대다. 가치투자·디스트레스트·이벤트드리븐·

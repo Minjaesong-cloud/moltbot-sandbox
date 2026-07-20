@@ -42,6 +42,9 @@ https://www.youtube.com/@PatrickBoyleOnFinance, 채널 ID `UCASM0cgfkJxQ1ICmRilf
 - **Robert Carver** (전 Man AHL, 『Systematic Trading』 저자) — 강연 2편 자막
   ("Simplicity in Systematic Trading", "Diversification of Trading Strategies") →
   `references/experts/robert-carver.md`. 시스템 트레이딩 설계·과최적화·분산·포지션 사이징.
+- **Howard Marks** (Oaktree Capital 창업자, 『The Most Important Thing』·『Mastering the
+  Market Cycle』 저자) — 강연·대담 3편 자막 → `references/experts/howard-marks.md`. 2차적
+  사고, 시장 사이클·심리, 리스크(영구 손실), 디스트레스트·크레딧, 역발상.
 - 수집 방법: yt-dlp로 채널 영상 목록을 받아 전략·투자 관련 영상을 선별하고 자동 생성
   영어 자막(VTT)을 다운로드해 텍스트로 정리 후 인사이트 추출.
 - 전문가 간 일치/차이는 SKILL.md의 "전문가 간 공통 원칙 vs 관점 차이" 섹션에 정리.
