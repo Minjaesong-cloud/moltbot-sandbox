@@ -60,4 +60,5 @@ test/e2e/.dev.vars
 .wrangler-e2e-*.jsonc
 
 # npm config
-.npmrc
+.npmrc__pycache__/
+*.pyc
