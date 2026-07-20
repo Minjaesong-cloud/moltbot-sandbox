@@ -27,6 +27,18 @@ https://www.youtube.com/@PatrickBoyleOnFinance, 채널 ID `UCASM0cgfkJxQ1ICmRilf
 - 추출 결과 → `references/hedge-fund-strategies.md`, `references/quant-strategies.md`,
   `references/boyle-quotes.md`.
 
+## 3. 추가 전문가 (허브 확장)
+
+- **Ben Felix** (PWL Capital CIO, 유튜브 Common Sense Investing) — 영상 12편 자막 →
+  `references/experts/ben-felix.md`. 증거 기반 팩터 투자·인덱스·행동재무학. 학술 논문
+  (Fama-French, Bessembinder, Hartzmark & Solomon 등)을 실무로 번역.
+- **Ray Dalio** (Bridgewater 창업자, 유튜브 Principles) — 영상 10편 자막(How the Economic
+  Machine Works 1~5, Changing World Order, 부채 사이클 등) → `references/experts/ray-dalio.md`.
+  매크로·부채 사이클·빅 사이클 프레임워크.
+- 수집 방법: yt-dlp로 채널 영상 목록을 받아 전략·투자 관련 영상을 선별하고 자동 생성
+  영어 자막(VTT)을 다운로드해 텍스트로 정리 후 인사이트 추출.
+- 전문가 간 일치/차이는 SKILL.md의 "전문가 간 공통 원칙 vs 관점 차이" 섹션에 정리.
+
 ## 주의
 
 - 자동 생성 자막이라 표기 오차가 있을 수 있으나, 인용문은 원 발언의 취지를 보존했다.
