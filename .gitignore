@@ -62,3 +62,4 @@ test/e2e/.dev.vars
 # npm config
 .npmrc__pycache__/
 *.pyc
+.dart_key

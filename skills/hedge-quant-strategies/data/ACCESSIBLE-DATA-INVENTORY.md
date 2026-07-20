@@ -80,6 +80,14 @@
   파일명이 매월 바뀌고 6·7월은 긴 표기(ERPJune26/ERPJuly26) — `damodaran.implied_erp()`가
   역순 탐색으로 처리. ⚠ 같은 폴더의 ERPbymonth.xls는 2018-05에서 멈춘 폐기 파일.
 
+### 한국 기업 재무 — DART API ★2026-07 키 확보·검증 (한국 팩터의 열쇠)
+- `https://opendart.fss.or.kr/api/` — 무료 키(사용자 발급), 하루 20,000건.
+- corpCode(종목↔고유번호), fnlttSinglAcntAll(연결 전체 재무: 자산·자본·순이익 **지배/비지배
+  분리 제공**·영업CF), stockTotqySttus(발행주식수), 그 외 배당·최대주주·공시원문.
+- 구현: `dart.py` (키는 환경변수 DART_API_KEY 또는 git 제외된 `.dart_key` — **커밋 금지**).
+- 연간보고서는 3월 공시 → 팩터 형성 6월 규칙으로 look-ahead 회피.
+- 검증: 한국 밸류·퀄리티·발생액 팩터 백테스트 → `../backtests/KOREA-FUNDAMENTALS.md`.
+
 ### 한국 시장 일별 — Naver 금융 ★2026-07 신규 검증 (한국 최고 무료 소스)
 - `https://api.finance.naver.com/siseJson.naver?symbol=<심볼>&requestType=1&startTime=..&endTime=..&timeframe=day`
 - KOSPI(1990~)·KOSDAQ(1996~)·개별종목 6자리 코드: 일별 OHLCV + **외국인소진율**(종목만).
