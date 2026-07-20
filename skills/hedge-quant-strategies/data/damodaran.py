@@ -124,6 +124,59 @@ def erp(country='Korea'):
             '디폴트스프레드': float(r[ds]) if ds else None}
 
 
+# ---------- 월간 내재 ERP (implied ERP — 라이브 밸류에이션 신호) ----------
+_ERP_BASE = "https://pages.stern.nyu.edu/~adamodar/pc/implprem/"
+# 파일명이 매월 바뀜: ERPJan26.xlsx ... 6·7월은 긴 표기(ERPJune26/ERPJuly26) — 실측 확인
+_MONTH_NAMES = {1: ['Jan'], 2: ['Feb'], 3: ['Mar'], 4: ['Apr'], 5: ['May'], 6: ['June', 'Jun'],
+                7: ['July', 'Jul'], 8: ['Aug'], 9: ['Sep', 'Sept'], 10: ['Oct'], 11: ['Nov'], 12: ['Dec']}
+
+
+def implied_erp(lookback_months=8):
+    """S&P500 월간 내재 ERP 시계열(2008-09~현재). 최신 월 파일을 역순 탐색해 내려받는다.
+
+    반환: DataFrame(index=월초) — ERP (T12m), adj riskfree ERP, Expected Return 등.
+    용도: finbot 2차 신호(밸류에이션 예산). ERP가 자기 10년 평균 대비 낮으면 주식 기대수익
+    예산 축소(스위치 아님 — CAPE 백테스트에서 타이밍 스위치는 실패 확인)."""
+    import datetime
+    os.makedirs(_CACHE, exist_ok=True)
+    today = datetime.date.today()
+    last_err = None
+    for back in range(lookback_months):
+        y, m = divmod((today.year * 12 + today.month - 1) - back, 12)
+        for nm in _MONTH_NAMES[m + 1]:
+            fn = f"ERP{nm}{str(y)[2:]}.xlsx"
+            p = os.path.join(_CACHE, fn)
+            try:
+                if not os.path.exists(p):
+                    req = urllib.request.Request(_ERP_BASE + fn, headers=UA)
+                    data = urllib.request.urlopen(req, timeout=60).read()
+                    with open(p, 'wb') as f:
+                        f.write(data)
+                df = pd.read_excel(p, sheet_name='Implied ERP (Monthly from 9-08)')
+                df.columns = [str(c).strip() for c in df.columns]
+                df = df[pd.to_datetime(df.iloc[:, 0], errors='coerce').notna()]
+                df = df.set_index(pd.to_datetime(df.iloc[:, 0])).drop(columns=df.columns[0])
+                return df.apply(pd.to_numeric, errors='coerce')
+            except Exception as e:                       # 아직 안 올라온 달 → 이전 달 시도
+                last_err = e
+                continue
+    raise RuntimeError(f"내재 ERP 파일을 {lookback_months}개월 내에서 못 찾음: {last_err}")
+
+
+def implied_erp_summary():
+    """최신 내재 ERP 요약 + 10년 평균 대비 위치 (finbot 밸류에이션 예산용)."""
+    df = implied_erp()
+    col = _pick(df, 'erp', 't12m')          # 'ERP (T12m)'
+    ret = _pick(df, 'expected return')
+    s = df[col].dropna()
+    latest, avg10 = float(s.iloc[-1]), float(s.tail(120).mean())
+    return {'기준월': str(s.index[-1].date()), '내재ERP': latest, '10년평균ERP': avg10,
+            'ERP/10년평균': latest / avg10,
+            '기대수익률': float(df[ret].dropna().iloc[-1]) if ret else None,
+            '해석': ('ERP가 10년 평균보다 낮음 → 주식 기대수익 예산 축소(타이밍 스위치 아님)'
+                     if latest < avg10 else 'ERP가 10년 평균 이상 → 주식 기대수익 예산 정상')}
+
+
 if __name__ == '__main__':
     kr = erp('Korea')
     print(f"한국 ERP: 총 {kr['총ERP']:.2%} (국가 프리미엄 {kr['국가리스크프리미엄']:.2%}, "

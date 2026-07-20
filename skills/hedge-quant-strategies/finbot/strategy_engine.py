@@ -79,12 +79,12 @@ def cot_adjust():
         return np.nan, 1.0
 
 def valuation_context():
-    """2차: 밸류에이션은 배분 가중이지 스위치가 아님 — 여기선 참고 정보로 출력."""
+    """2차: 밸류에이션은 배분 가중이지 스위치가 아님. Damodaran 월간 내재 ERP를 참고 정보로."""
     try:
-        sp = fred('SP500'); e10 = None
-        return dict(note="CAPE는 Shiller 데이터로 연 1회 갱신 권장(기대수익 예산). 스위치로 쓰지 말 것.")
+        from damodaran import implied_erp_summary
+        return implied_erp_summary()
     except Exception:
-        return {}
+        return dict(note="내재 ERP 조회 실패 — CAPE(Shiller)로 연 1회 수동 갱신")
 
 def target_portfolio():
     assets = load_universe()
@@ -109,6 +109,10 @@ if __name__=='__main__':
     today, port, cotz = target_portfolio()
     print(f"기준일: {today.date()} | COT z(E-mini S&P): {cotz:+.2f}" if np.isfinite(cotz) else f"기준일: {today.date()} | COT: n/a")
     print(port.to_string(index=False))
+    v = valuation_context()
+    if '내재ERP' in v:
+        print(f"\n밸류에이션(2차·예산): 내재 ERP {v['내재ERP']:.2%} vs 10년평균 {v['10년평균ERP']:.2%} "
+              f"({v['기준월']}) | 주식 기대수익 {v['기대수익률']:.2%}\n  → {v['해석']}")
     print(f"\n총 그로스: {port['목표비중'].sum():.2f} (상한 2.0)")
     print("근거: 추세=10개월 이평(자산군·152년 검증, KOSPI·BTC 포함) / 사이징=변동성 타깃 10%(글로벌 CTA 샤프 1.06)")
     print("     / COT=보조 필터(약한 역발상) / 밸류에이션은 연간 배분 예산으로 별도 반영")

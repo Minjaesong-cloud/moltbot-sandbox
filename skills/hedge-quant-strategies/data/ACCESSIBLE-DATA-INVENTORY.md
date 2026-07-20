@@ -75,6 +75,10 @@
 - 전략: 장기 밸류에이션 레짐, 산업 상대가치, ERP 추정(Damodaran 스킬과 연동).
 - **파서/스크리너 구현 완료** → `damodaran.py` + `DAMODARAN-SCREENER.md` (96개 산업 대조표,
   한국 ERP 4.87% 파싱 검증. 함정: 음의 장부가 → PBV 극단값, 헤더 행 위치 매년 변동).
+- **월간 내재 ERP ★신규 검증**: `https://pages.stern.nyu.edu/~adamodar/pc/implprem/ERP<월><연2자리>.xlsx`
+  — 시트 'Implied ERP (Monthly from 9-08)'에 2008-09~현재 월별 시계열(내재 ERP·기대수익률).
+  파일명이 매월 바뀌고 6·7월은 긴 표기(ERPJune26/ERPJuly26) — `damodaran.implied_erp()`가
+  역순 탐색으로 처리. ⚠ 같은 폴더의 ERPbymonth.xls는 2018-05에서 멈춘 폐기 파일.
 
 ### 심리·크립토 보강 ★신규 검증
 - 크립토 공포탐욕지수(2018~ 일별): `https://api.alternative.me/fng/?limit=0&format=json`
