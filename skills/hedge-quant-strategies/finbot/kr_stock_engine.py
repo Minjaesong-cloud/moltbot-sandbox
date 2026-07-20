@@ -48,9 +48,22 @@ def picks():
     return gate, float(kospi.iloc[-1]), df, sel
 
 
+def vol_scale(target=0.12, cap=1.5):
+    """모멘텀 크래시 방어(Barroso–Santa Clara): 타깃 12% / KOSPI 최근 6개월 실현변동성.
+    검증(KOREA-DAILY.md §7): 샤프 0.72→0.75, MaxDD -33→-25%, 단 CAGR 18.3→12.7%
+    (급등 연도를 깎는 비용). 강제가 아니라 권장 배율로만 표시한다."""
+    k = naver_daily('KOSPI', start='20250101')['close']
+    rv = float(k.pct_change().tail(126).std() * np.sqrt(252))
+    return round(min(target / rv, cap), 2) if rv > 0 else 1.0
+
+
 if __name__ == '__main__':
     gate, k, df, sel = picks()
     print(f"KOSPI {k:,.0f} | 10개월 추세 게이트: {'ON' if gate else 'OFF — 전량 현금'}")
+    try:
+        print(f"권장 포지션 스케일(변동성 12% 타깃): ×{vol_scale()} — 모멘텀 크래시 방어(선택)")
+    except Exception:
+        pass
     print("\n[모멘텀 12-1 순위 (전체)]")
     print(df.to_string(index=False))
     if gate:
