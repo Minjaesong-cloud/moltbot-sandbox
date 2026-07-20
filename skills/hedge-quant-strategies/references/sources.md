@@ -45,6 +45,9 @@ https://www.youtube.com/@PatrickBoyleOnFinance, 채널 ID `UCASM0cgfkJxQ1ICmRilf
 - **Howard Marks** (Oaktree Capital 창업자, 『The Most Important Thing』·『Mastering the
   Market Cycle』 저자) — 강연·대담 3편 자막 → `references/experts/howard-marks.md`. 2차적
   사고, 시장 사이클·심리, 리스크(영구 손실), 디스트레스트·크레딧, 역발상.
+- **Joel Greenblatt** (Gotham Capital 창업자·컬럼비아 교수, 『You Can Be a Stock Market
+  Genius』 저자) — 컬럼비아 특수상황 강의 + 해설 팟캐스트 자막 → `references/experts/joel-greenblatt.md`.
+  스핀오프·LEAPS·합병증권 등 특수상황, 매직 포뮬러, 집중투자.
 - 수집 방법: yt-dlp로 채널 영상 목록을 받아 전략·투자 관련 영상을 선별하고 자동 생성
   영어 자막(VTT)을 다운로드해 텍스트로 정리 후 인사이트 추출.
 - 전문가 간 일치/차이는 SKILL.md의 "전문가 간 공통 원칙 vs 관점 차이" 섹션에 정리.
