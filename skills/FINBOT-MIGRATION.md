@@ -11,7 +11,7 @@ https://github.com/Minjaesong-cloud/moltbot-sandbox 의 claude/uiux-design-skill
 
 1. skills/hedge-quant-strategies/ 폴더 전체 (전략 허브 + data/ + backtests/ + finbot/)
 2. skills/options-derivatives/, skills/financial-statement-analysis/,
-   skills/INVESTING-SKILLS-INDEX.md (자매 스킬)
+   skills/industry-analysis/, skills/INVESTING-SKILLS-INDEX.md (자매 스킬)
 3. skills/FINBOT-MIGRATION.md 의 "이식 후 할 일" 섹션을 따라 마무리해줘
 
 통합 위치는 이 프로젝트 구조에 맞게 정하되, hedge-quant-strategies 내부의 상대경로

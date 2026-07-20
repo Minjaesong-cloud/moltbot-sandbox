@@ -26,6 +26,12 @@
 - 회계 조작 수법 · 레드 플래그 체크리스트 · Beneish M-score · 이익의 질(현금 검증).
 - 전문가: Howard Schilit, Marcellus, Beneish.
 
+### 4. `industry-analysis` — 산업·섹터 분석
+**트리거**: 산업·업종·섹터 분석·비교·유망 섹터·경쟁강도·산업 밸류에이션.
+- 실측(Damodaran 96산업 마진·ROE·베타·자본비용) × 검증 프레임(생애주기·경기민감도·해자)
+  × 전문가 렌즈(Damodaran·Marks·Dalio·Greenblatt). `industry_profile.py <산업>` 즉시 실행.
+- **제1원칙**: 근거 없는 "산업 전문가 견해"를 지어내지 않고 실측+프레임+실제 추출 렌즈만 적용.
+
 ## 스킬을 엮는 표준 투자 워크플로
 
 1. **전략 지형 파악** — 어떤 전략인가·어떻게 돈 버나·어떻게 죽나 → `hedge-quant-strategies`(카탈로그·5단계 프레임).
