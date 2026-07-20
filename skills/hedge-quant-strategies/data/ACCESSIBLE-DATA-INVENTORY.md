@@ -73,6 +73,8 @@
 - Shiller CAPE·금리·배당(1871~): `http://www.econ.yale.edu/~shiller/data/ie_data.xls`
 - Damodaran 산업 멀티플·ERP·베타: `https://pages.stern.nyu.edu/~adamodar/pc/datasets/*.xls`
 - 전략: 장기 밸류에이션 레짐, 산업 상대가치, ERP 추정(Damodaran 스킬과 연동).
+- **파서/스크리너 구현 완료** → `damodaran.py` + `DAMODARAN-SCREENER.md` (96개 산업 대조표,
+  한국 ERP 4.87% 파싱 검증. 함정: 음의 장부가 → PBV 극단값, 헤더 행 위치 매년 변동).
 
 ### 심리·크립토 보강 ★신규 검증
 - 크립토 공포탐욕지수(2018~ 일별): `https://api.alternative.me/fng/?limit=0&format=json`

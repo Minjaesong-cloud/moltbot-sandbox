@@ -14,45 +14,53 @@ finbot 통합 전략 엔진 (스캐폴드) — 백테스트로 검증된 신호 
 import sys, os, json, urllib.request, io
 import pandas as pd, numpy as np
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'data'))
-from fetch_data import fred, cftc_cot
+from fetch_data import fred, cftc_cot, blockchain_btc
 
 # ---------------- 설정 (표준 파라미터 — 데이터에 맞춰 조정하지 말 것) ----------------
 TREND_MONTHS   = 10      # 10개월 이평 (Faber 표준)
 VOL_TARGET     = 0.10    # 자산 슬리브당 연 10% 변동성 타깃
-VOL_WINDOW     = 60      # 변동성 추정 창(일)
+VOL_WINDOW     = 60      # 변동성 추정 창(일 단위 자산)
+VOL_WINDOW_M   = 36      # 변동성 추정 창(월 단위 자산)
 MAX_LEVER      = 1.5     # 슬리브 레버리지 상한
 COT_Z_WINDOW   = 156     # COT z-score 창(주)
-UNIVERSE = {             # 자산군 프록시 (FRED)
-    'US_EQ':   dict(series='NASDAQCOM', kind='price'),
-    'JP_EQ':   dict(series='NIKKEI225', kind='price'),
-    'BOND10':  dict(series='DGS10',     kind='yield', dur=7.0),
-    'OIL':     dict(series='DCOILWTICO',kind='price'),
-    'KRW':     dict(series='DEXKOUS',   kind='fx_short'),  # 롱 KRW = 숏 USD/KRW
+UNIVERSE = {             # 자산군 프록시. freq: D=일(252), D365=일(365, 크립토), M=월(12)
+    'US_EQ':   dict(series='NASDAQCOM',        kind='price'),
+    'KR_EQ':   dict(series='SPASTT01KRM661N',  kind='price', freq='M'),   # KOSPI 월별 (OECD)
+    'JP_EQ':   dict(series='NIKKEI225',        kind='price'),
+    'BOND10':  dict(series='DGS10',            kind='yield', dur=7.0),
+    'OIL':     dict(series='DCOILWTICO',       kind='price'),
+    'KRW':     dict(series='DEXKOUS',          kind='fx_short'),  # 롱 KRW = 숏 USD/KRW
+    'BTC':     dict(src='btc',                 kind='price', freq='D365'),  # blockchain.info 일별
 }
+PPY = {'D': 252, 'D365': 365, 'M': 12}   # 연간화 기준 기간 수
 
 def load_universe():
-    R, LVL = {}, {}
+    """자산별 (수익률, 레벨, 연간기간수). 주기가 달라 자산별 시리즈로 유지(단일 DF로 합치지 않음
+    — 월별 자산을 일별 인덱스에 섞으면 변동성 추정이 왜곡된다)."""
+    assets = {}
     for name, cfg in UNIVERSE.items():
-        s = fred(cfg['series']).astype(float)
+        if cfg.get('src') == 'btc':
+            s = blockchain_btc().resample('D').ffill()   # ~4일 샘플링 → 일별 보정(백테스트에서 확인한 함정)
+        else:
+            s = fred(cfg['series']).astype(float)
         if cfg['kind'] == 'price':
             s = s[s > 0]; r = s.pct_change().clip(-.4,.4); lvl = s
         elif cfg['kind'] == 'yield':
             dy = s.diff()/100; r = (s.shift(1)/100/252) - cfg['dur']*dy; lvl=(1+r.fillna(0)).cumprod()
         elif cfg['kind'] == 'fx_short':
             r = (-s.pct_change()).clip(-.2,.2); lvl=(1+r.fillna(0)).cumprod()
-        R[name], LVL[name] = r, lvl
-    R = pd.DataFrame(R).sort_index().ffill(limit=5)
-    LVL = pd.DataFrame(LVL).reindex(R.index).ffill()
-    return R, LVL
+        assets[name] = dict(r=r, lvl=lvl, ppy=PPY[cfg.get('freq','D')])
+    return assets
 
-def trend_signal(LVL):
-    m = LVL.resample('ME').last()
-    sig = m > m.rolling(TREND_MONTHS).mean()
-    return sig.reindex(LVL.index, method='ffill').fillna(False)   # 1차: on/off
+def trend_on(lvl):
+    m = lvl.resample('ME').last()
+    ma = m.rolling(TREND_MONTHS).mean()
+    return bool((m > ma).iloc[-1]) if len(m) >= TREND_MONTHS else False   # 1차: on/off
 
-def vol_weights(R):
-    rv = R.rolling(VOL_WINDOW).std()*np.sqrt(252)
-    return (VOL_TARGET/rv).clip(upper=MAX_LEVER)                  # 최종: 변동성 타깃
+def vol_weight(r, ppy):
+    win = VOL_WINDOW_M if ppy == 12 else VOL_WINDOW
+    rv = float(r.rolling(win).std().iloc[-1]) * np.sqrt(ppy)
+    return min(VOL_TARGET/rv, MAX_LEVER) if np.isfinite(rv) and rv > 0 else 0.0  # 최종: 변동성 타깃
 
 def cot_adjust():
     """3차 보조: E-mini S&P 투기 z. 과열(z>2) 시 주식 슬리브 0.75배, 위축(z<-1) 시 1.1배."""
@@ -79,19 +87,18 @@ def valuation_context():
         return {}
 
 def target_portfolio():
-    R, LVL = load_universe()
-    sig  = trend_signal(LVL)
-    w    = vol_weights(R)
+    assets = load_universe()
     cotz, cot_adj = cot_adjust()
-    today = R.index[-1]
+    today = max(a['r'].index[-1] for a in assets.values())
     rows=[]
-    for a in UNIVERSE:
-        on   = bool(sig[a].iloc[-1])
-        base = float(w[a].iloc[-1]) if np.isfinite(w[a].iloc[-1]) else 0.0
-        adj  = cot_adj if a.endswith('_EQ') else 1.0
+    for name, a in assets.items():
+        on   = trend_on(a['lvl'])
+        base = vol_weight(a['r'], a['ppy'])
+        adj  = cot_adj if name.endswith('_EQ') else 1.0
         tgt  = round(base*adj,3) if on else 0.0
-        rows.append(dict(자산=a, 추세=('ON' if on else 'OFF'),
-                         변동성타깃웨이트=round(base,3), COT조정=adj, 목표비중=tgt))
+        rows.append(dict(자산=name, 추세=('ON' if on else 'OFF'),
+                         변동성타깃웨이트=round(base,3), COT조정=adj, 목표비중=tgt,
+                         데이터기준=str(a['r'].index[-1].date())))
     port=pd.DataFrame(rows)
     gross=port['목표비중'].sum()
     if gross>2.0:   # 총 그로스 상한 (Carver: 리스크는 자본이 아니라 변동성으로)
@@ -103,5 +110,5 @@ if __name__=='__main__':
     print(f"기준일: {today.date()} | COT z(E-mini S&P): {cotz:+.2f}" if np.isfinite(cotz) else f"기준일: {today.date()} | COT: n/a")
     print(port.to_string(index=False))
     print(f"\n총 그로스: {port['목표비중'].sum():.2f} (상한 2.0)")
-    print("근거: 추세=10개월 이평(4개 자산군·152년 검증) / 사이징=변동성 타깃 10%(글로벌 CTA 샤프 1.06)")
+    print("근거: 추세=10개월 이평(자산군·152년 검증, KOSPI·BTC 포함) / 사이징=변동성 타깃 10%(글로벌 CTA 샤프 1.06)")
     print("     / COT=보조 필터(약한 역발상) / 밸류에이션은 연간 배분 예산으로 별도 반영")
