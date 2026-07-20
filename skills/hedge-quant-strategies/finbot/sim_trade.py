@@ -29,6 +29,20 @@ def current_prices(codes):
     return out
 
 
+def _benchmarks():
+    """S&P500·KOSPI 최신 레벨 — 목표(S&P 초과수익) 추적용. 실패 시 생략."""
+    out = {}
+    try:
+        import os
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'data'))
+        from fetch_data import fred, naver_daily
+        out['sp500'] = float(fred('SP500').iloc[-1])
+        out['kospi'] = float(naver_daily('KOSPI', start='20260701')['close'].iloc[-1])
+    except Exception:
+        pass
+    return out
+
+
 def rebalance():
     gate, kospi, df, sel = picks()
     acct = B.load()
@@ -38,19 +52,24 @@ def rebalance():
     px = current_prices(all_codes)
     today = str(date.today())
 
-    # 1) 픽에서 빠진 보유 종목 전량 매도
+    THESIS = "12-1 모멘텀 상위5 유지 AND KOSPI 10개월선 위 AND 발생액 최악20% 미진입 — 셋 중 하나 깨지면 매도, 그 외엔 보유"
+    # 1) 무효화 조건이 깨진 보유 종목만 전량 매도 (감정 배제: 픽 이탈/게이트 OFF가 유일한 매도 사유)
     for code in list(acct['positions']):
         if code not in target_codes and code in px:
-            B.sell(acct, code, acct['positions'][code]['qty'], px[code], today)
-    # 2) 신규 픽 매수 — 가용 현금을 빈 슬롯에 균등 배분
+            why = 'KOSPI 게이트 OFF' if not gate else '모멘텀 상위5 이탈'
+            B.sell(acct, code, acct['positions'][code]['qty'], px[code], today, reason=why)
+    # 2) 신규 픽 매수 — 가용 현금을 빈 슬롯에 균등 배분, 매수 근거·무효화 조건 기록
     new = [c for c in target_codes if c not in acct['positions'] and c in px]
     if new:
         per = acct['cash'] / len(new) * 0.995   # 수수료 여유
+        ranks = {c: i + 1 for i, c in enumerate(target_codes)}
         for code in new:
             qty = int(per // px[code])
             if qty > 0:
-                B.buy(acct, code, names.get(code, code), qty, px[code], today)
-    v = B.valuate(acct, px, today)
+                B.buy(acct, code, names.get(code, code), qty, px[code], today,
+                      reason=f"12-1 모멘텀 {ranks[code]}위 + KOSPI 게이트 ON + 발생액 필터 통과",
+                      thesis=THESIS)
+    v = B.valuate(acct, px, today, benchmarks=_benchmarks())
     B.save(acct)
     return gate, kospi, sel, v, acct
 
@@ -58,7 +77,7 @@ def rebalance():
 def value_only():
     acct = B.load()
     px = current_prices(set(acct['positions']))
-    v = B.valuate(acct, px)
+    v = B.valuate(acct, px, benchmarks=_benchmarks())
     B.save(acct)
     return v, acct
 
@@ -78,3 +97,5 @@ if __name__ == '__main__':
         for c, p in acct['positions'].items():
             print(f"  {p['name']}: {p['qty']}주 @ 평단 {p['avg_price']:,.0f}")
         print(f"누적 거래 {len(acct['trades'])}건 — 기록: sim_account.json")
+        cmp = B.vs_benchmark(acct)
+        if cmp: print("vs 벤치마크:", cmp)
