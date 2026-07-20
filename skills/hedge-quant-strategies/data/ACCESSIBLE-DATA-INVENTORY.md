@@ -80,6 +80,18 @@
   파일명이 매월 바뀌고 6·7월은 긴 표기(ERPJune26/ERPJuly26) — `damodaran.implied_erp()`가
   역순 탐색으로 처리. ⚠ 같은 폴더의 ERPbymonth.xls는 2018-05에서 멈춘 폐기 파일.
 
+### 변동성·스트레스·재정 ★2026-07 신규 검증
+- **CBOE VIX 일별 OHLC(1990~)**: `https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv`
+  (FRED VIXCLS는 종가만 — CBOE는 OHLC). SKEW도 동일 패턴(`SKEW_History.csv`, 1990~).
+- **OFR 금융스트레스지수(2000~ 일별)**: `https://www.financialresearch.gov/financial-stress-index/data/fsi.csv`
+  — 0=평균, 서브컴포넌트(신용/주식밸류/안전자산/펀딩/변동성)+지역(US/선진/EM).
+- **NY Fed 기준금리 API**: `https://markets.newyorkfed.org/api/rates/all/latest.json` (SOFR·EFFR+평균).
+- **재무부 FiscalData**: `https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/debt_to_penny`
+  (국가부채·경매·현금잔고. ⚠ `page[size]`는 URL 인코딩 필수).
+- 구현: `fetch_data.py`의 `cboe_index() / ofr_fsi() / nyfed_rates() / treasury_fiscal()`.
+- 검증 결과: VRP 평균 +3.6pt(83% 양수) 실측, FSI>0 게이트 MaxDD −52→−30%, VIX 게이트·SKEW
+  타이밍은 무효 → `../backtests/VOLATILITY-SIGNALS.md`.
+
 ### 심리·크립토 보강 ★신규 검증
 - 크립토 공포탐욕지수(2018~ 일별): `https://api.alternative.me/fng/?limit=0&format=json`
 - Blockchain.info BTC 차트: `https://api.blockchain.info/charts/market-price?timespan=5years&format=json`

@@ -102,6 +102,26 @@ def gdelt_news_volume(query, timespan='3m'):
 def bis_eer(country='KR', last=1000):  # BIS 실질실효환율(일별)
     raw=_get(f"https://stats.bis.org/api/v2/data/dataflow/BIS/WS_EER/1.0/D.N.B.{country}?format=csv&lastNObservations={last}").decode()
     d=pd.read_csv(io.StringIO(raw)); return d.set_index(pd.to_datetime(d['TIME_PERIOD']))['OBS_VALUE']
+# ---------- 11. 변동성·스트레스·재정 (★2026-07 신규 검증) ----------
+def cboe_index(index='VIX'):
+    """CBOE 지수 일별 히스토리(1990~). index: VIX(OHLC — FRED VIXCLS는 종가만) | SKEW(테일리스크)"""
+    raw=_get(f"https://cdn.cboe.com/api/global/us_indices/daily_prices/{index}_History.csv").decode()
+    d=pd.read_csv(io.StringIO(raw)); d['DATE']=pd.to_datetime(d['DATE'])
+    return d.set_index('DATE').sort_index()
+def ofr_fsi():
+    """OFR 금융스트레스지수 일별(2000~). 0=평균. 서브컴포넌트: Credit/Equity valuation/
+    Safe assets/Funding/Volatility + 지역(US/선진/이머징). 리스크 레짐 게이트용."""
+    raw=_get("https://www.financialresearch.gov/financial-stress-index/data/fsi.csv").decode()
+    d=pd.read_csv(io.StringIO(raw)); d['Date']=pd.to_datetime(d['Date'])
+    return d.set_index('Date').sort_index()
+def nyfed_rates():
+    """NY Fed 기준금리 스냅샷(SOFR·EFFR 등 + 30/90/180일 평균)."""
+    return json.loads(_get("https://markets.newyorkfed.org/api/rates/all/latest.json"))['refRates']
+def treasury_fiscal(endpoint='v2/accounting/od/debt_to_penny', params='page%5Bsize%5D=100&sort=-record_date'):
+    """미 재무부 FiscalData(국가부채·경매·현금잔고 등). ⚠ page[size]는 URL 인코딩 필수."""
+    j=json.loads(_get(f"https://api.fiscaldata.treasury.gov/services/api/fiscal_service/{endpoint}?{params}"))
+    return pd.DataFrame(j['data'])
+
 def nasdaq_symbols():
     raw=_get("https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt").decode()
     return pd.read_csv(io.StringIO(raw),sep='|')[:-1]

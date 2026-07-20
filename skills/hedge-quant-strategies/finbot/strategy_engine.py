@@ -113,6 +113,13 @@ if __name__=='__main__':
     if '내재ERP' in v:
         print(f"\n밸류에이션(2차·예산): 내재 ERP {v['내재ERP']:.2%} vs 10년평균 {v['10년평균ERP']:.2%} "
               f"({v['기준월']}) | 주식 기대수익 {v['기대수익률']:.2%}\n  → {v['해석']}")
+    try:  # 스트레스 레짐(참고 레이어): FSI>0 → 0.5배 게이트가 NASDAQ MaxDD -52%→-30% (VOLATILITY-SIGNALS.md)
+        from fetch_data import ofr_fsi
+        f = ofr_fsi()['OFR FSI'].dropna()
+        print(f"스트레스(OFR FSI, {f.index[-1].date()}): {f.iloc[-1]:+.2f} "
+              f"({'⚠ 평균 이상 스트레스 — 주식 절반 축소 고려(단일시장 검증)' if f.iloc[-1]>0 else '정상(평균 이하)'})")
+    except Exception:
+        pass
     print(f"\n총 그로스: {port['목표비중'].sum():.2f} (상한 2.0)")
     print("근거: 추세=10개월 이평(자산군·152년 검증, KOSPI·BTC 포함) / 사이징=변동성 타깃 10%(글로벌 CTA 샤프 1.06)")
     print("     / COT=보조 필터(약한 역발상) / 밸류에이션은 연간 배분 예산으로 별도 반영")
