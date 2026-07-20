@@ -5,8 +5,11 @@ description: 옵션·파생상품에 대한 전문가 지식 스킬. 콜/풋 옵
 
 # 옵션 · 파생상품 (Options & Derivatives)
 
-옵션·파생상품에 대한 전문가 지식을 정리한 스킬. 주 소스는 전직 헤지펀드 매니저·교수
-**Patrick Boyle**의 "Trading and Pricing Financial Derivatives" 강의 시리즈(17편).
+옵션·파생상품에 대한 전문가 지식을 정리한 스킬. 수록된 전문가:
+- **Patrick Boyle** (전 헤지펀드 매니저·교수) — 그릭스·프라이싱·구조화·신용파생 이론 (강의 17편)
+- **Euan Sinclair** (『Volatility Trading』 저자) · **Benn Eifert** (QVR Advisors) — 옵션·변동성
+  실전 트레이딩(VRP·엣지·숏볼 관리·시장 구조) → `references/experts/vol-traders.md`
+
 헤지펀드/퀀트 전략은 자매 스킬 `hedge-quant-strategies`를 참조한다.
 
 ## ⚠️ 사용 원칙
@@ -22,6 +25,7 @@ description: 옵션·파생상품에 대한 전문가 지식 스킬. 콜/풋 옵
 - 옵션 기초·그릭스·헤징·프라이싱 → `references/options-greeks.md`
 - 구조화상품·이색옵션 → `references/structured-exotic.md`
 - 신용파생(CDS·CDO)·스왑 → `references/credit-swaps.md`
+- 옵션·변동성 실전 트레이딩(VRP·엣지·숏볼 관리·딜러 감마·시장 구조) → `references/experts/vol-traders.md`
 - Patrick Boyle 원문 인용 → `references/boyle-quotes.md`
 - 출처 → `references/sources.md`
 

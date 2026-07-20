@@ -10,6 +10,14 @@ https://www.youtube.com/@PatrickBoyleOnFinance, 채널 ID `UCASM0cgfkJxQ1ICmRilf
 - 수집 방법: yt-dlp로 채널 영상 목록을 받아 파생상품 관련 영상을 선별하고, 자동 생성 영어
   자막(VTT)을 다운로드해 텍스트로 정리 후 인사이트 추출.
 
+## 추가 전문가 (실전 트레이딩)
+
+- **Euan Sinclair** (『Volatility Trading』·『Positional Option Trading』 저자, 전 옵션
+  마켓메이커) + **Benn Eifert** (QVR Advisors 창업자, 변동성 헤지펀드) — 강연 2편
+  ("30 Years of Options Trading", "Trading Volatility in Volatile Markets") 자막 →
+  `references/experts/vol-traders.md`. VRP, 옵션 트레이딩 엣지, 숏볼 위험 관리, 딜러 감마·
+  디스퍼전, 변동성 시장 구조. yt-dlp로 자막 수집 후 추출.
+
 ## 관련 스킬
 
 - 헤지펀드·퀀트 전략(캐피털 스트럭처 아비트라지, 변동성 아비트라지 등) → `hedge-quant-strategies`
