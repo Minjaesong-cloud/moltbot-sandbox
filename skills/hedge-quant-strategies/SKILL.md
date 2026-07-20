@@ -15,6 +15,7 @@ description: 헤지펀드 전략과 퀀트/체계적 투자 전략에 대한 전
 - **Robert Carver** (전 Man AHL) — 체계적/시스템 트레이딩(CTA·퀀트 설계, 단순함·분산·사이징) → `references/experts/robert-carver.md`
 - **Howard Marks** (Oaktree) — 시장 사이클·디스트레스트·리스크 철학(2차적 사고·역발상) → `references/experts/howard-marks.md`
 - **Joel Greenblatt** (Gotham) — 특수상황·이벤트 가치투자(스핀오프·LEAPS·매직 포뮬러) → `references/experts/joel-greenblatt.md`
+- **Stanley Druckenmiller** (Duquesne, 前 Soros) — 글로벌 매크로·집중투자·자본 보존(유동성·사이징·심리) → `references/experts/stanley-druckenmiller.md`
 
 > 여러 전문가를 추가할 때는 이 파일을 허브로 유지한다: 전문가들이 일치하는 내용은
 > "공통 원칙"으로, 상충하는 내용은 "관점 차이(어떤 상황엔 A, 저런 상황엔 B)"로
@@ -97,6 +98,9 @@ description: 헤지펀드 전략과 퀀트/체계적 투자 전략에 대한 전
 - **마켓메이킹 / HFT** — 유동성 공급의 대가로 스프레드 수취. 속도·인프라가 엣지.
 - **변동성 전략** — 변동성 자체를 자산으로 매매(옵션·VIX 등). 변동성은 시간에 따라
   군집·변동(GARCH)한다는 성질을 이용/관리.
+
+> **툴킷을 실전에 엮는 법**: 여러 도구·전문가 렌즈를 하나의 사고 흐름으로 적용하는 워크드
+> 예제(펀드 평가·저평가주·포트폴리오 분산)는 `references/worked-examples.md` 참조.
 
 ## 4. 전략을 평가·설명할 때의 공통 프레임
 

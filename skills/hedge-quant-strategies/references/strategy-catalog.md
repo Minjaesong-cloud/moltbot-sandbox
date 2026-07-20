@@ -101,7 +101,8 @@ HFT·IB만. → hedge-fund-strategies.md.
 
 거시 변수(금리·환율·원자재·주가지수)에 방향성/상대가치 베팅. 톱다운.
 
-**재량적 매크로(Discretionary)** — 매니저 판단. 엣지=거시 분석·정책 예측. 예: Soros(1992 GBP,
+**재량적 매크로(Discretionary)** — 매니저 판단. 엣지=거시 분석·정책 예측. 실행 철학(집중·사이징·
+유동성·손절)은 experts/stanley-druckenmiller.md. 예: Soros(1992 GBP,
 하루 $10억), Druckenmiller, Bridgewater(재량+체계 혼합). 스큐=다양, 유연.
 
 **시스템적 매크로(Systematic Macro)** — 모델 기반 거시 신호. 캐리·밸류·모멘텀을 자산군 전반에.
