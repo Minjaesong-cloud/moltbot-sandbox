@@ -11,6 +11,7 @@ description: 헤지펀드 전략과 퀀트/체계적 투자 전략에 대한 전
 - **Patrick Boyle** (전직 헤지펀드 매니저·교수) — 헤지펀드/퀀트 전략 전반, 회의적·실증 관점
 - **Ben Felix** (PWL Capital CIO) — 증거 기반 팩터 투자·인덱스·행동재무학 → `references/experts/ben-felix.md`
 - **Ray Dalio** (Bridgewater 창업자) — 매크로·부채 사이클·빅 사이클 → `references/experts/ray-dalio.md`
+- **Aswath Damodaran** (NYU Stern) — 밸류에이션(가치·디스트레스트·이벤트·액티비스트의 근간) → `references/experts/aswath-damodaran.md`
 
 > 여러 전문가를 추가할 때는 이 파일을 허브로 유지한다: 전문가들이 일치하는 내용은
 > "공통 원칙"으로, 상충하는 내용은 "관점 차이(어떤 상황엔 A, 저런 상황엔 B)"로
@@ -41,7 +42,7 @@ description: 헤지펀드 전략과 퀀트/체계적 투자 전략에 대한 전
 - 변동성 전략 심화(볼아브·디스퍼전·테일헤지·볼셀링, VRP) → `references/volatility-strategies.md`
 - 팩터 투자의 학술적 토대(밸류·모멘텀·퀄리티·사이즈·로우볼, 스마트베타) → `references/factor-investing.md`
 - 행동재무학·시장효율성(투자자 편향, EMH, 편향→전략 전환, 자산군 기초) → `references/behavioral-finance.md`
-- 전문가별 심화(증거 기반 투자·팩터 실무 / 매크로·부채 사이클) → `references/experts/ben-felix.md`, `references/experts/ray-dalio.md`
+- 전문가별 심화(증거 기반 투자·팩터 실무 / 매크로·부채 사이클 / 밸류에이션) → `references/experts/ben-felix.md`, `references/experts/ray-dalio.md`, `references/experts/aswath-damodaran.md`
 - Patrick Boyle 원문 인용 모음 → `references/boyle-quotes.md`
 - 출처·수집 방법 → `references/sources.md`
 
@@ -126,6 +127,17 @@ description: 헤지펀드 전략과 퀀트/체계적 투자 전략에 대한 전
   의심한다(Boyle의 "매끈한 수익→대참사", Felix의 "volatility laundering").
 - **감정을 배제한 사전 규칙(시스템)이 편향을 방어**한다 (Boyle·Felix 공통, behavioral-finance.md).
 - **대부분의 "알파"는 알려진 팩터(베타)로 설명된다.** 진짜 초과수익은 드물고 비싸다.
+
+### 밸류에이션이라는 공통 하부구조 (Damodaran)
+- **가격 vs 가치 구분**은 거의 모든 전략의 토대다. 가치투자·디스트레스트·이벤트드리븐·
+  액티비스트는 "가치 대비 싼 가격"을 사는 것이고, 스탯아브·트렌드는 "가격의 통계적 행태"를
+  매매한다 — 둘을 혼동하지 않는 것이 출발점.
+- **통제가치(Value of Control) = 경영권 변경 확률 × (최적경영가치 − 현상유지가치)**는
+  **이벤트드리븐·액티비스트 전략의 정량적 뼈대**다(활동가 등장 시 확률↑ → 기대가치↑).
+- **부실기업 평가법**(going concern × 생존확률 + 청산 × 실패확률, 실패위험은 할인율이 아니라
+  별도 팩터)은 **디스트레스트 전략**의 핵심 도구.
+- 단, Damodaran 자신은 "갭이 닫힌다는 보장은 없다"며 시장 피드백·촉매의 중요성을 강조 →
+  이벤트/촉매가 있는 전략(머저아브·액티비스트)이 순수 밸류보다 실현이 확실한 이유와 연결된다.
 
 ### 관점 차이 (상황별로 판단)
 - **팩터 틸트를 얼마나 적극적으로?**

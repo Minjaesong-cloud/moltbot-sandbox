@@ -35,6 +35,10 @@ https://www.youtube.com/@PatrickBoyleOnFinance, 채널 ID `UCASM0cgfkJxQ1ICmRilf
 - **Ray Dalio** (Bridgewater 창업자, 유튜브 Principles) — 영상 10편 자막(How the Economic
   Machine Works 1~5, Changing World Order, 부채 사이클 등) → `references/experts/ray-dalio.md`.
   매크로·부채 사이클·빅 사이클 프레임워크.
+- **Aswath Damodaran** (NYU Stern, 유튜브 "Aswath Damodaran on Valuation") — Little Book of
+  Valuation 시리즈 등 영상 13편 자막 → `references/experts/aswath-damodaran.md`. 가격 vs
+  가치, DCF·멀티플, 스토리와 숫자, 생애주기별 밸류에이션(특히 부실기업), 통제가치. 가치·
+  디스트레스트·이벤트드리븐·액티비스트 전략의 펀더멘털 근간.
 - 수집 방법: yt-dlp로 채널 영상 목록을 받아 전략·투자 관련 영상을 선별하고 자동 생성
   영어 자막(VTT)을 다운로드해 텍스트로 정리 후 인사이트 추출.
 - 전문가 간 일치/차이는 SKILL.md의 "전문가 간 공통 원칙 vs 관점 차이" 섹션에 정리.
