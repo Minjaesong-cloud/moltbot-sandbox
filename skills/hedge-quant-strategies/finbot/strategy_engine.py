@@ -14,7 +14,7 @@ finbot 통합 전략 엔진 (스캐폴드) — 백테스트로 검증된 신호 
 import sys, os, json, urllib.request, io
 import pandas as pd, numpy as np
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'data'))
-from fetch_data import fred, cftc_cot, blockchain_btc
+from fetch_data import fred, cftc_cot, blockchain_btc, naver_daily
 
 # ---------------- 설정 (표준 파라미터 — 데이터에 맞춰 조정하지 말 것) ----------------
 TREND_MONTHS   = 10      # 10개월 이평 (Faber 표준)
@@ -25,7 +25,7 @@ MAX_LEVER      = 1.5     # 슬리브 레버리지 상한
 COT_Z_WINDOW   = 156     # COT z-score 창(주)
 UNIVERSE = {             # 자산군 프록시. freq: D=일(252), D365=일(365, 크립토), M=월(12)
     'US_EQ':   dict(series='NASDAQCOM',        kind='price'),
-    'KR_EQ':   dict(series='SPASTT01KRM661N',  kind='price', freq='M'),   # KOSPI 월별 (OECD)
+    'KR_EQ':   dict(src='naver', symbol='KOSPI', kind='price'),   # KOSPI 일별 (Naver, 1990~)
     'JP_EQ':   dict(series='NIKKEI225',        kind='price'),
     'BOND10':  dict(series='DGS10',            kind='yield', dur=7.0),
     'OIL':     dict(series='DCOILWTICO',       kind='price'),
@@ -41,6 +41,11 @@ def load_universe():
     for name, cfg in UNIVERSE.items():
         if cfg.get('src') == 'btc':
             s = blockchain_btc().resample('D').ffill()   # ~4일 샘플링 → 일별 보정(백테스트에서 확인한 함정)
+        elif cfg.get('src') == 'naver':
+            try:
+                s = naver_daily(cfg['symbol'])['close']
+            except Exception:                             # 폴백: OECD 월별 (FRED)
+                s = fred('SPASTT01KRM661N').astype(float); cfg = dict(cfg, freq='M')
         else:
             s = fred(cfg['series']).astype(float)
         if cfg['kind'] == 'price':

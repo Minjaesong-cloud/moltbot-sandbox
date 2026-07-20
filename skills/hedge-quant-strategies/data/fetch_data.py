@@ -102,6 +102,20 @@ def gdelt_news_volume(query, timespan='3m'):
 def bis_eer(country='KR', last=1000):  # BIS 실질실효환율(일별)
     raw=_get(f"https://stats.bis.org/api/v2/data/dataflow/BIS/WS_EER/1.0/D.N.B.{country}?format=csv&lastNObservations={last}").decode()
     d=pd.read_csv(io.StringIO(raw)); return d.set_index(pd.to_datetime(d['TIME_PERIOD']))['OBS_VALUE']
+# ---------- 10.5 한국 시장 (Naver 금융 — ★2026-07 신규 검증, 최고의 무료 한국 소스) ----------
+def naver_daily(symbol='KOSPI', start='19900101', end='20991231'):
+    """한국 일별 시세. symbol: KOSPI(1990~)|KOSDAQ(1996~)|종목코드 6자리(예: '005930' 삼성전자).
+    반환: DataFrame[open,high,low,close,volume,foreign] — foreign=외국인소진율(%, 지수는 0).
+    KRX 정보데이터시스템은 차단 확인 — 이 엔드포인트가 유일하게 뚫린 한국 일별 소스."""
+    import re
+    url=(f"https://api.finance.naver.com/siseJson.naver?symbol={symbol}&requestType=1"
+         f"&startTime={start}&endTime={end}&timeframe=day")
+    raw=_get(url, headers={'User-Agent':'Mozilla/5.0'}).decode()
+    rows=re.findall(r'\["(\d{8})",\s*([\d.]+),\s*([\d.]+),\s*([\d.]+),\s*([\d.]+),\s*(\d+),\s*([\d.]+)',raw)
+    d=pd.DataFrame(rows,columns=['date','open','high','low','close','volume','foreign'])
+    d['date']=pd.to_datetime(d['date']); d=d.set_index('date').astype(float)
+    return d.sort_index()
+
 # ---------- 11. 변동성·스트레스·재정 (★2026-07 신규 검증) ----------
 def cboe_index(index='VIX'):
     """CBOE 지수 일별 히스토리(1990~). index: VIX(OHLC — FRED VIXCLS는 종가만) | SKEW(테일리스크)"""

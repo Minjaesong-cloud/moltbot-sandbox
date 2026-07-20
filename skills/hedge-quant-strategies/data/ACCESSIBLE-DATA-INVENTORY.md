@@ -80,6 +80,13 @@
   파일명이 매월 바뀌고 6·7월은 긴 표기(ERPJune26/ERPJuly26) — `damodaran.implied_erp()`가
   역순 탐색으로 처리. ⚠ 같은 폴더의 ERPbymonth.xls는 2018-05에서 멈춘 폐기 파일.
 
+### 한국 시장 일별 — Naver 금융 ★2026-07 신규 검증 (한국 최고 무료 소스)
+- `https://api.finance.naver.com/siseJson.naver?symbol=<심볼>&requestType=1&startTime=..&endTime=..&timeframe=day`
+- KOSPI(1990~)·KOSDAQ(1996~)·개별종목 6자리 코드: 일별 OHLCV + **외국인소진율**(종목만).
+- 구현: `fetch_data.naver_daily()`. 검증: 36년 KOSPI 추세 백테스트·외국인 신호
+  → `../backtests/KOREA-DAILY.md`. ⚠ 비공식 엔드포인트(차단 리스크) — 엔진은 OECD 월별 폴백 내장.
+- KRX 정보데이터시스템(data.krx.co.kr)은 이 환경에서 차단 확인.
+
 ### 변동성·스트레스·재정 ★2026-07 신규 검증
 - **CBOE VIX 일별 OHLC(1990~)**: `https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv`
   (FRED VIXCLS는 종가만 — CBOE는 OHLC). SKEW도 동일 패턴(`SKEW_History.csv`, 1990~).

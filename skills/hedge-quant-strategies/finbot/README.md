@@ -5,8 +5,8 @@
 
 ## 1. `strategy_engine.py` — 자산배분 엔진 (톱다운)
 
-7개 슬리브: US_EQ(나스닥) · KR_EQ(KOSPI 월별) · JP_EQ(닛케이) · BOND10(미10년) ·
-OIL(WTI) · KRW(원화) · BTC(blockchain.info).
+7개 슬리브: US_EQ(나스닥) · KR_EQ(KOSPI **일별**, Naver — 실패 시 OECD 월별 폴백) ·
+JP_EQ(닛케이) · BOND10(미10년) · OIL(WTI) · KRW(원화) · BTC(blockchain.info).
 
 신호 위계 (각 층의 백테스트 근거는 `backtests/` 문서):
 1. **추세(스위치)**: 10개월 이평 on/off — Shiller 152년·KOSPI·BTC 검증
@@ -41,7 +41,13 @@ ROE 상위 MaxDD −6.6%, 저발생액 15.6% vs 고발생액 12.8%.
 - 2026-07 실행에서 확인된 전형적 왜곡: 초고 ROE(600%+)는 장부자본이 작은 산술 왜곡,
   초고 E/P(70%+)는 float 과소·가격 낡음 의심 — 극단값일수록 데이터부터 의심할 것.
 
-## 3. 파이프라인 시연
+## 3. `paper_log.py` — 페이퍼 트래킹
+
+실행 시점의 목표 포트폴리오·컨텍스트(FSI·내재 ERP·COT)를 `paper_log.jsonl`에 기록.
+라이브 기록이 쌓이면 엔진의 실시간 판단을 사후 조작 없이 평가할 수 있다(첫 기록 2026-07-20:
+그로스 1.10, KR_EQ가 7월 폭락으로 볼타깃 0.15까지 자동 축소된 상태).
+
+## 4. 파이프라인 시연
 
 `PIPELINE-DEMO.md` — 스크리너 상위 2개(THC·SCCO)를 포렌식(SEC 원데이터)·산업 맥락
 (Damodaran)으로 심사한 라이브 기록. 핵심 교훈: 상위 2개 모두 조정 사유(float 왜곡·NCI·

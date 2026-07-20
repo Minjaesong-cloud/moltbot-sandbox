@@ -27,14 +27,24 @@ TOP_N       = 20
 
 
 def build_panel(cy='CY2025'):
-    """SEC frames 5개 → CIK 단면 패널. 한 요청당 전 상장사."""
+    """SEC frames → CIK 단면 패널. 한 요청당 전 상장사.
+
+    NCI(비지배지분) 조정: 표준 XBRL에선 NetIncomeLoss = 지배주주 귀속이지만, CY2025 실측에서
+    187/1,216개 기업이 NI에 NCI를 포함해 태깅(THC 사례 — PIPELINE-DEMO.md). NI≈ProfitLoss인데
+    NCI가 따로 있으면 NI − NCI로 보정한다."""
     q4i = cy + 'Q4I'
-    ni     = sec_frame('NetIncomeLoss', cy)
+    ni     = pd.Series(sec_frame('NetIncomeLoss', cy))
+    pl     = pd.Series(sec_frame('ProfitLoss', cy))
+    nci    = pd.Series(sec_frame('NetIncomeLossAttributableToNoncontrollingInterest', cy))
     cfo    = sec_frame('NetCashProvidedByUsedInOperatingActivities', cy)
     eq     = sec_frame('StockholdersEquity', q4i)
     assets = sec_frame('Assets', q4i)
-    flt    = sec_frame('EntityPublicFloat', cy.replace('CY', 'CY') + 'Q2I', 'dei', 'USD')
+    flt    = sec_frame('EntityPublicFloat', cy + 'Q2I', 'dei', 'USD')
+    bad = ni.index.intersection(pl.index).intersection(nci.index)
+    bad = bad[(ni[bad] - pl[bad]).abs() < nci[bad].abs() * 0.1]   # NI≈PL(NCI 포함 태깅) 기업만
+    ni[bad] = ni[bad] - nci[bad]
     df = pd.DataFrame({'ni': ni, 'cfo': cfo, 'equity': eq, 'assets': assets, 'float': flt}).dropna()
+    df.attrs['nci_adjusted'] = len(bad)
     return df
 
 
@@ -67,7 +77,7 @@ def annotate(df, top_n=TOP_N):
 
 if __name__ == '__main__':
     panel = build_panel()
-    print(f"패널: {len(panel)}개 기업 (5개 frames 교집합, CY2025)")
+    print(f"패널: {len(panel)}개 기업 (frames 교집합, CY2025) | NCI 태깅 보정 {panel.attrs.get('nci_adjusted','?')}개")
     ranked = score(panel)
     print(f"필터 후: {len(ranked)}개 (float>${MIN_FLOAT/1e6:.0f}M, 자본>0, 발생액 최악 20% 제외)")
     top = annotate(ranked)
