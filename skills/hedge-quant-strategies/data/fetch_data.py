@@ -65,6 +65,48 @@ def github_sp500():
     d=pd.read_csv(io.StringIO(raw),parse_dates=['date'])
     return d.pivot_table(index='date',columns='Name',values='close').sort_index()
 
+
+
+# ---------- 8. SEC Frames (한 요청으로 전 기업 단면 재무 — 팩터 구축용 ★) ----------
+def sec_frame(tag, period, taxonomy='us-gaap', unit='USD'):
+    """예: sec_frame('NetIncomeLoss','CY2023') → {cik: value} 전 기업.
+    instant 항목은 CY2023Q4I, dei 주식수는 sec_frame('EntityCommonStockSharesOutstanding','CY2024Q2I','dei','shares')"""
+    j=json.loads(_get(f"https://data.sec.gov/api/xbrl/frames/{taxonomy}/{tag}/{unit}/{period}.json"))
+    return {d['cik']:d['val'] for d in j.get('data',[])}
+
+# ---------- 9. Ken French 팩터 라이브러리 (1926~, 팩터의 정전) ----------
+def ken_french(dataset='F-F_Research_Data_Factors'):
+    """dataset: F-F_Research_Data_Factors(3팩터) | F-F_Momentum_Factor | F-F_Research_Data_5_Factors_2x3"""
+    import zipfile, re
+    raw=_get(f"https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/{dataset}_CSV.zip")
+    z=zipfile.ZipFile(io.BytesIO(raw)); txt=z.read(z.namelist()[0]).decode('latin-1').splitlines()
+    start=next(i for i,l in enumerate(txt) if ',' in l and ('Mkt-RF' in l or 'Mom' in l))
+    rows=[l for l in txt[start+1:] if re.match(r'^\s*\d{6},',l)]
+    df=pd.read_csv(io.StringIO(txt[start]+'\n'+'\n'.join(rows)))
+    df.columns=['ym']+[c.strip() for c in df.columns[1:]]
+    df['date']=pd.to_datetime(df['ym'].astype(str),format='%Y%m')
+    return df.set_index('date').drop(columns='ym').astype(float)/100.0
+
+# ---------- 10. 심리·기타 검증 소스 ----------
+def crypto_fear_greed():  # 2018~ 일별 크립토 공포탐욕지수
+    j=json.loads(_get("https://api.alternative.me/fng/?limit=0&format=json"))
+    return pd.Series({pd.to_datetime(int(d['timestamp']),unit='s'):int(d['value']) for d in j['data']}).sort_index()
+def blockchain_btc(chart='market-price', timespan='5years'):
+    j=json.loads(_get(f"https://api.blockchain.info/charts/{chart}?timespan={timespan}&format=json"))
+    return pd.Series({pd.to_datetime(v['x'],unit='s'):v['y'] for v in j['values']})
+def gdelt_news_volume(query, timespan='3m'):
+    """전세계 뉴스 볼륨 타임라인. ⚠ 5초당 1요청, 초과 시 장시간 429."""
+    import urllib.parse
+    j=json.loads(_get(f"https://api.gdeltproject.org/api/v2/doc/doc?query={urllib.parse.quote(query)}&mode=timelinevol&format=json&timespan={timespan}"))
+    return pd.Series({pd.to_datetime(d['date']):d['value'] for d in j['timeline'][0]['data']})
+def bis_eer(country='KR', last=1000):  # BIS 실질실효환율(일별)
+    raw=_get(f"https://stats.bis.org/api/v2/data/dataflow/BIS/WS_EER/1.0/D.N.B.{country}?format=csv&lastNObservations={last}").decode()
+    d=pd.read_csv(io.StringIO(raw)); return d.set_index(pd.to_datetime(d['TIME_PERIOD']))['OBS_VALUE']
+def nasdaq_symbols():
+    raw=_get("https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt").decode()
+    return pd.read_csv(io.StringIO(raw),sep='|')[:-1]
+
+
 if __name__=='__main__':
     print("[SEC] Apple 매출·순이익 최근:")
     m=sec_ticker_map(); cik=m['AAPL']

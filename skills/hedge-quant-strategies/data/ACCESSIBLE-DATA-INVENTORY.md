@@ -54,8 +54,35 @@
 - 전 세계 뉴스 볼륨·톤·이벤트. **5초당 1요청 제한.** 전략: 뉴스 감성·이벤트 탐지.
 
 ### 참고 — 에너지(EIA, 무료 키), 메타(Wikipedia API), 한국(pykrx·DART, 무료 키)
+- GDELT rate limit 주의: 위반 시 **장시간 429**(경험적으로 수십 분). 반드시 5초/1요청.
 - EIA `https://api.eia.gov/v2/...?api_key=<KEY>`(무료 발급), Wikipedia API, 한국 종목은 pykrx·
   OpenDartReader(korea-quant-resources.md).
+
+
+### 팩터 정전 — Ken French Data Library ★신규 검증
+- `https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/<DATASET>_CSV.zip`
+- 3팩터(1926~)·5팩터(1963~)·모멘텀·산업포트폴리오 등. **팩터 연구의 표준.**
+- 전략: 팩터 프리미엄 장기 검증·레짐 분석·팩터 타이밍(backtests/FUNDAMENTAL-FACTORS.md).
+
+### SEC Frames — 전 기업 단면 재무 ★신규 검증 (팩터 구축의 핵심)
+- `https://data.sec.gov/api/xbrl/frames/us-gaap/<Tag>/USD/CY<년>[Q4I].json`
+- **한 요청으로 7,000+ 기업**의 특정 재무항목(NI·자기자본·CFO·자산). dei 주식수도 지원.
+- 전략: 밸류(E/P)·퀄리티(ROE)·발생액 팩터를 실제 재무로 구축(검증 완료).
+
+### 장기 밸류에이션 — Shiller / Damodaran ★신규 검증
+- Shiller CAPE·금리·배당(1871~): `http://www.econ.yale.edu/~shiller/data/ie_data.xls`
+- Damodaran 산업 멀티플·ERP·베타: `https://pages.stern.nyu.edu/~adamodar/pc/datasets/*.xls`
+- 전략: 장기 밸류에이션 레짐, 산업 상대가치, ERP 추정(Damodaran 스킬과 연동).
+
+### 심리·크립토 보강 ★신규 검증
+- 크립토 공포탐욕지수(2018~ 일별): `https://api.alternative.me/fng/?limit=0&format=json`
+- Blockchain.info BTC 차트: `https://api.blockchain.info/charts/market-price?timespan=5years&format=json`
+- 전략: 크립토 역발상·리스크 게이트.
+
+### 기타 ★신규 검증
+- BIS 실질실효환율(국가별 일별): `https://stats.bis.org/api/v2/data/dataflow/BIS/WS_EER/1.0/D.N.B.KR?format=csv`
+- NOAA 날씨(관측소 일별): `https://www.ncei.noaa.gov/access/services/data/v1?...` (농산물·에너지)
+- NasdaqTrader 상장 심볼: `https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt`
 
 ## ❌ 이 환경에서 막힌 소스 (finbot 환경에선 될 수 있음)
 - Yahoo Finance(yfinance/chart API — SSL 리셋·rate limit), stooq(JS 챌린지), Binance(지역 차단),
