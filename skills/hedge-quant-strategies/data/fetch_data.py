@@ -122,6 +122,9 @@ def cboe_index(index='VIX'):
     raw=_get(f"https://cdn.cboe.com/api/global/us_indices/daily_prices/{index}_History.csv").decode()
     d=pd.read_csv(io.StringIO(raw)); d['DATE']=pd.to_datetime(d['DATE'])
     return d.set_index('DATE').sort_index()
+def cboe_quote(symbol='AAPL'):
+    """CBOE 지연 시세(개별 미국 주식·ETF, 키 불필요). current_price·bid·ask·OHLC."""
+    return json.loads(_get(f"https://cdn.cboe.com/api/global/delayed_quotes/quotes/{symbol}.json"))['data']
 def ofr_fsi():
     """OFR 금융스트레스지수 일별(2000~). 0=평균. 서브컴포넌트: Credit/Equity valuation/
     Safe assets/Funding/Volatility + 지역(US/선진/이머징). 리스크 레짐 게이트용."""

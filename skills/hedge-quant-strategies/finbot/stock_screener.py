@@ -19,7 +19,7 @@ finbot 개별 종목 스크리너 — SEC XBRL frames(실제 재무) 팩터 + Da
 import sys, os, json, urllib.request
 import pandas as pd, numpy as np
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'data'))
-from fetch_data import sec_frame, sec_ticker_map, sec_filings
+from fetch_data import sec_frame, sec_ticker_map, sec_filings, cboe_quote
 
 MIN_FLOAT   = 2e8    # 유통시총 $200M 미만(마이크로캡) 제외 — 유동성·데이터 품질
 ACCRUAL_CUT = 0.80   # 발생액 상위(=최악) 20% 제외
@@ -59,19 +59,29 @@ def score(df):
 
 
 def annotate(df, top_n=TOP_N):
-    """상위 후보에 티커·회사명·SIC 산업 부여 (SIC은 후보에만 개별 조회 — 요청 수 절약)."""
+    """상위 후보에 티커·회사명·SIC 산업 + 진짜 시총 E/P(CBOE 실시간가 × SEC 주식수) 부여.
+    float 기반 E/P의 왜곡(내부자 지분·가격 시차)을 후보 단계에서 교정한다."""
     tmap = {int(cik): t for t, cik in sec_ticker_map().items()}
+    try:      # dei 주식수 (최신 분기 instant → 없으면 전 분기)
+        shares = sec_frame('EntityCommonStockSharesOutstanding', 'CY2026Q1I', 'dei', 'shares')
+    except Exception:
+        shares = {}
     top = df.head(top_n * 2).copy()          # 티커 없는 CIK(펀드 등) 대비 여유
     top['ticker'] = [tmap.get(c) for c in top.index]
     top = top.dropna(subset=['ticker']).head(top_n)
-    names, sics = [], []
-    for cik in top.index:
+    names, sics, mcap_ep = [], [], []
+    for cik, row in top.iterrows():
         try:
             f = sec_filings(str(cik).zfill(10))
             names.append(f.get('name', '')[:32]); sics.append(f.get('sicDescription', '')[:36])
         except Exception:
             names.append(''); sics.append('')
-    top['회사'], top['SIC산업'] = names, sics
+        try:
+            mc = cboe_quote(row['ticker'])['current_price'] * shares[cik]
+            mcap_ep.append(row['ni'] / mc if mc > 0 else np.nan)
+        except Exception:
+            mcap_ep.append(np.nan)
+    top['회사'], top['SIC산업'], top['ep_mcap'] = names, sics, mcap_ep
     return top
 
 
@@ -81,13 +91,18 @@ if __name__ == '__main__':
     ranked = score(panel)
     print(f"필터 후: {len(ranked)}개 (float>${MIN_FLOAT/1e6:.0f}M, 자본>0, 발생액 최악 20% 제외)")
     top = annotate(ranked)
-    out = top[['ticker', '회사', 'SIC산업', 'ep', 'roe', 'accrual', 'float']].copy()
-    out.columns = ['티커', '회사', 'SIC산업', 'E/P', 'ROE', '발생액/자산', '유통시총']
+    out = top[['ticker', '회사', 'SIC산업', 'ep', 'ep_mcap', 'roe', 'accrual', 'float']].copy()
+    out.columns = ['티커', '회사', 'SIC산업', 'E/P(float)', 'E/P(시총)', 'ROE', '발생액/자산', '유통시총']
     out['유통시총'] = (out['유통시총'] / 1e9).round(1).astype(str) + 'B'
-    for c in ['E/P', 'ROE', '발생액/자산']:
+    for c in ['E/P(float)', 'E/P(시총)', 'ROE', '발생액/자산']:
         out[c] = (out[c] * 100).round(1)
-    print("\n[밸류+퀄리티 상위 (발생액 필터 통과), % 단위]")
+    print("\n[밸류+퀄리티 상위 (발생액 필터 통과), % 단위 — E/P(시총)=CBOE 실시간가×SEC 주식수 기준]")
     print(out.to_string(index=False))
+    both = out.dropna(subset=['E/P(시총)'])
+    if len(both):
+        infl = (both['E/P(float)'] / both['E/P(시총)']).replace([np.inf,-np.inf],np.nan).dropna()
+        print(f"\nfloat E/P가 시총 E/P 대비 과대한 후보(배율>1.5): "
+              f"{', '.join(both.loc[infl[infl>1.5].index,'티커'])}")
     print("\n다음 단계: ① financial-statement-analysis 스킬로 숫자의 질 검증")
     print("          ② data/damodaran.py 산업 스크리너로 산업 평균 대비 설명 안 되는 격차인지 확인")
     print("주의: float 기반 E/P는 내부자 지분 큰 기업에서 과대. 스크린이지 신호가 아님.")
