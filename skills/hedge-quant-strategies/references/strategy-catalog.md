@@ -142,7 +142,7 @@ Man, Millburn. → 상세 `trend-following-cta.md`.
 **디스트레스트 크레딧** — ②와 겹침, 채권 중심.
 
 **구조화 크레딧(Structured Credit)** — MBS·ABS·CLO·CDO 트랜치 매매. 엣지=구조·상관 모델링.
-리스크=상관 동조화·모델(2008). → options-derivatives의 credit-swaps.md.
+리스크=상관 동조화·모델(2008). → 상세 `structured-credit.md`, 상품은 options-derivatives의 credit-swaps.md.
 
 **크레딧 상대가치** — 캐피털 스트럭처, CDS-채권 베이시스, 인덱스-싱글네임.
 
@@ -185,6 +185,7 @@ Prado). 백테스트 신뢰성 문제.
 
 **멀티전략(Multi-Strategy)** — 여러 전략을 한 펀드에서 자본을 동적으로 배분. 팟(pod) 구조로
 매니저별 리스크 한도. 예: Citadel, Millennium, Point72, Balyasny. 엣지=분산+자본 재배분.
+→ 상세 `multi-strategy-pods.md`.
 
 **펀드 오브 펀즈(FoF)** — 여러 헤지펀드에 분산 투자. 이중 수수료·Madoff 스캔들로 쇠퇴.
 

@@ -40,6 +40,8 @@ description: 헤지펀드 전략과 퀀트/체계적 투자 전략에 대한 전
   퀀트의 역사) → `references/quant-strategies.md`
 - 트렌드추종·매니지드퓨처스/CTA 심화(시계열 모멘텀, crisis alpha, 시스템 설계) → `references/trend-following-cta.md`
 - 변동성 전략 심화(볼아브·디스퍼전·테일헤지·볼셀링, VRP) → `references/volatility-strategies.md`
+- 구조화 크레딧 심화(CLO·CDO·MBS, 상관 거래) → `references/structured-credit.md`
+- 멀티전략·팟 플랫폼 심화(Citadel/Millennium형, stop-out·패스스루) → `references/multi-strategy-pods.md`
 - 팩터 투자의 학술적 토대(밸류·모멘텀·퀄리티·사이즈·로우볼, 스마트베타) → `references/factor-investing.md`
 - 행동재무학·시장효율성(투자자 편향, EMH, 편향→전략 전환, 자산군 기초) → `references/behavioral-finance.md`
 - 전문가별 심화(증거 기반 투자·팩터 실무 / 매크로·부채 사이클 / 밸류에이션) → `references/experts/ben-felix.md`, `references/experts/ray-dalio.md`, `references/experts/aswath-damodaran.md`
