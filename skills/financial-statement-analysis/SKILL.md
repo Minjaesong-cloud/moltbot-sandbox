@@ -22,6 +22,7 @@ Damodaran 레퍼런스, DD 산출물 작성은 arcton-dd 스킬을 참조.
 - 회계 조작 수법(매출·비용·현금흐름·지표 왜곡) → `references/shenanigans.md`
 - 레드 플래그 체크리스트 + 정량 탐지 도구(M-score·발생액) → `references/red-flags-tools.md`
 - 실무 전문가 인사이트(Schilit·Marcellus 등) → `references/experts.md`
+- 워크드 예제(레드 플래그를 실전 흐름으로 + 밸류에이션과 결합) → `references/worked-example.md`
 - 출처 → `references/sources.md`
 
 ## 1. 큰 그림 — 왜 이익을 의심하는가
