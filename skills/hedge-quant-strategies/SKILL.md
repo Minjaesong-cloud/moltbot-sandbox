@@ -45,6 +45,9 @@ description: 헤지펀드 전략과 퀀트/체계적 투자 전략에 대한 전
 - 멀티전략·팟 플랫폼 심화(Citadel/Millennium형, stop-out·패스스루) → `references/multi-strategy-pods.md`
 - 통계적 차익거래·페어트레이딩 실전(공적분·팩터중립·퀀트지진) → `references/statistical-arbitrage.md`
 - 크립토·디지털자산 전략(베이시스·펀딩·온체인, 카운터파티 리스크) → `references/crypto-digital-asset.md`
+- 이머징 마켓 매크로(캐리·소버린·정책 리스크) → `references/emerging-macro.md`
+- 액티비스트·이벤트드리븐 플레이북(촉매·통제가치·가치 언락) → `references/activist-event-driven.md`
+- 실패 사례·리스크 교훈(LTCM~Archegos, "이 전략이 어떻게 죽는가") → `references/failures-risk-lessons.md`
 - 팩터 투자의 학술적 토대(밸류·모멘텀·퀄리티·사이즈·로우볼, 스마트베타) → `references/factor-investing.md`
 - 행동재무학·시장효율성(투자자 편향, EMH, 편향→전략 전환, 자산군 기초) → `references/behavioral-finance.md`
 - 전문가별 심화(증거 기반 투자·팩터 / 매크로·부채 사이클 / 밸류에이션 / 시스템 트레이딩) → `references/experts/ben-felix.md`, `references/experts/ray-dalio.md`, `references/experts/aswath-damodaran.md`, `references/experts/robert-carver.md`
