@@ -28,7 +28,11 @@ description: 헤지펀드 전략과 퀀트/체계적 투자 전략에 대한 전
 
 ## 전략 지형도 (라우팅)
 
+**전 전략을 빠짐없이 훑거나 특정 전략을 분류·비교할 때는 먼저 `references/strategy-catalog.md`**
+(8대 패밀리 60여 전략의 수익원·손익구조·리스크·캐파 종합 인덱스)를 읽는다.
+
 세부 전략을 깊게 다룰 때는 아래 레퍼런스를 읽는다:
+- **전략 종합 카탈로그(전 세계 헤지펀드·퀀트 전략 총망라)** → `references/strategy-catalog.md`
 - 헤지펀드 전략(롱숏, 머저 아비트라지, 이벤트 드리븐, 매크로, distressed, 숏셀링, PE/LBO,
   리스크 패리티)의 메커니즘·수익구조·리스크 → `references/hedge-fund-strategies.md`
 - 퀀트/체계적 전략(통계적 차익거래, 페어트레이딩, 트렌드추종, 마켓메이킹, 변동성 모델링,
@@ -50,7 +54,8 @@ description: 헤지펀드 전략과 퀀트/체계적 투자 전략에 대한 전
 
 ## 2. 헤지펀드 전략 대분류
 
-각 전략의 상세 메커니즘·수익구조·리스크는 `references/hedge-fund-strategies.md` 참조.
+아래는 8대 패밀리의 요약이다. **전체 전략 목록(60여 개)과 각 손익구조는
+`references/strategy-catalog.md`**, 각 전략의 상세 메커니즘은 `references/hedge-fund-strategies.md` 참조.
 
 - **롱숏 에쿼티 / 시장중립** — 저평가 종목 매수 + 고평가 종목 공매도. 시장 베타를
   중립화하고 종목 선택(알파)만 남기는 것이 목표. 순노출(net exposure) 관리가 핵심.
