@@ -27,10 +27,33 @@ TOP_N = 5
 LOG = os.path.join(os.path.dirname(__file__), 'kr_paper_log.jsonl')
 
 
+def accrual_flags():
+    """발생액 최악 20% 종목 표시(제외용). 검증: 듀얼모멘텀 MaxDD -33→-28%, 수익 손실 없음
+    (KOREA-FUNDAMENTALS.md). DART 키 없거나 실패 시 빈 set(필터 생략)."""
+    try:
+        from dart import corp_codes, annual_financials
+        from concurrent.futures import ThreadPoolExecutor
+        cmap = corp_codes()
+        import datetime
+        fy = datetime.date.today().year - 1 if datetime.date.today().month >= 7 else datetime.date.today().year - 2
+        def one(code):
+            f = annual_financials(cmap[code][0], fy)
+            if f and all(k in f for k in ('ni', 'cfo', 'assets')):
+                return code, (f['ni'] - f['cfo']) / f['assets']
+            return code, np.nan
+        with ThreadPoolExecutor(6) as ex:
+            accr = dict(ex.map(one, list(UNIVERSE)))
+        s = pd.Series(accr).dropna()
+        return set(s[s > s.quantile(0.8)].index) if len(s) >= 10 else set()
+    except Exception:
+        return set()
+
+
 def picks():
     kospi = naver_daily('KOSPI')['close']
     km = kospi.resample('ME').last()
     gate = bool((km > km.rolling(10).mean()).iloc[-1])
+    excl = accrual_flags()
     rows = []
     for code, name in UNIVERSE.items():
         try:
@@ -39,12 +62,14 @@ def picks():
             mom = c.iloc[-22] / c.asof(c.index[-1] - pd.DateOffset(months=12)) - 1  # 12-1 (직전 1개월 제외)
             rows.append(dict(코드=code, 종목=name, 모멘텀=round(float(mom), 3),
                              외국인소진율=round(float(d['foreign'].iloc[-1]), 1),
+                             발생액필터=('제외' if code in excl else ''),
                              기준일=str(c.index[-1].date())))
             time.sleep(0.2)
         except Exception:
             continue
     df = pd.DataFrame(rows).sort_values('모멘텀', ascending=False).reset_index(drop=True)
-    sel = df.head(TOP_N) if gate else df.head(0)
+    pool = df[df['발생액필터'] != '제외'] if len(df[df['발생액필터'] != '제외']) >= TOP_N else df
+    sel = pool.head(TOP_N) if gate else df.head(0)
     return gate, float(kospi.iloc[-1]), df, sel
 
 

@@ -49,7 +49,7 @@ NBR 73→21%. float E/P가 1.5배 이상 과대한 후보는 자동 플래그.
 
 24개 대형주 12-1 모멘텀 상위 5 + KOSPI 10개월 추세 게이트. 검증(KOREA-DAILY.md §4·§6):
 CAGR 18.3%/MaxDD −33%, 비용 0.3%/편도 반영 후 16.6%. 생존편향 유니버스라 기대치는 절반으로.
-외국인소진율은 정보 표시만(필터 검증 실패). 실행 기록은 `kr_paper_log.jsonl`.
+외국인소진율은 정보 표시만(필터 검증 실패). DART 키가 있으면 발생액 최악 20% 자동 제외(MaxDD -33→-28%, KOREA-FUNDAMENTALS.md). 실행 기록은 `kr_paper_log.jsonl`.
 
 ## 4. `paper_log.py` — 페이퍼 트래킹
 
