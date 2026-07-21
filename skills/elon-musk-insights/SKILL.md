@@ -35,4 +35,6 @@ description: 일론 머스크(Elon Musk)의 공개 발언에서 추출한 인사
    가장 비싸다.
 4. **야망·리스크**: 실패 가능성이 높아도 충분히 중요하면 시도할 가치가 있다.
 
-*(references/는 리서치 완료 후 실제 출처와 함께 채워진다.)*
+references/에 **10개 테마 36개 인사이트**가 실제 출처(TED·Lex Fridman·Everyday Astronaut·
+Isaacson 전기·Tesla 이메일·검증 보도)와 함께 정리돼 있다. 원문 확정 인용과 재구성 가능성
+항목을 구분 표기했다.
