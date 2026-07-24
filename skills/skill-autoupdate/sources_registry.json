@@ -12,7 +12,11 @@
     {"domain": "ai", "name": "Yannic Kilcher", "handle": "YannicKilcher", "channel_id": "UCZHmQk67mSJgfCCTn7xBfew", "target_skill": "ai-engineering", "why": "ML 논문 심층 리뷰"},
     {"domain": "ai", "name": "Lex Fridman", "handle": "lexfridman", "channel_id": "UCSHZKyawb77ixDdsGog4iWA", "target_skill": "ai-engineering", "why": "AI 연구자 심층 대담(원 소스 인용에 유의)"},
     {"domain": "investing", "name": "수페TV (송민섭)", "handle": "supe-tv", "channel_id": "UCfnqgWlC5IvJEAPTmyjaixA", "target_skill": "korea-investing-voices", "why": "미국 ETF·배당·포트폴리오 장기투자, 개인투자자 실전"},
-    {"domain": "investing", "name": "설명왕_테이버 (김태형)", "handle": null, "channel_id": "UCOio3vyYLWiKlHSYRKW-9UA", "target_skill": "korea-investing-voices", "why": "한국 기업분석·시황·트렌드, 15년차 개인투자자"}
+    {"domain": "investing", "name": "설명왕_테이버 (김태형)", "handle": null, "channel_id": "UCOio3vyYLWiKlHSYRKW-9UA", "target_skill": "korea-investing-voices", "why": "한국 기업분석·시황·트렌드, 15년차 개인투자자"},
+    {"domain": "geopolitics", "name": "GZERO Media (Ian Bremmer)", "handle": "gzeromedia", "channel_id": "UC-8_qAhNVG8G1wxONMnYr3Q", "target_skill": "global-intelligence", "why": "Eurasia Group 창립자, 초당파 지정학 분석"},
+    {"domain": "geopolitics", "name": "Zeihan on Geopolitics", "handle": "zeihanongeopolitics", "channel_id": "UCsy9I56PY3IngCf_VGjunMQ", "target_skill": "global-intelligence", "why": "인구통계·지리 기반 전략 분석틀"},
+    {"domain": "business", "name": "Harvard Business Review", "handle": "harvardbusinessreview", "channel_id": "UCWo4IA01TXzBeGJJKWHOG9g", "target_skill": "global-intelligence", "why": "경영 이론·실무 결합 최고 권위지 공식 채널"},
+    {"domain": "ai", "name": "AI Explained", "handle": "aiexplained-official", "channel_id": "UCNJ1Ymd5yFuUPtn21xtRbbw", "target_skill": "ai-engineering", "why": "자체 벤치마크(SimpleBench), 근거 기반 AI 분석"}
   ],
   "manual_only": [
     {"domain": "any", "platform": "X/Twitter", "note": "X는 이 환경에서 자동 수집 불가(무료 API 폐지·nitter 사망·JS 월). 신뢰 계정(예: @naval, @ID_AA_Carmack 등) 콘텐츠는 사용자가 직접 붙여넣으면 스킬에 반영. 자동 크롤링은 하지 않는다(신뢰·법적 리스크)."}
