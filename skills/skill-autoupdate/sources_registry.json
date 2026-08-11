@@ -1,0 +1,133 @@
+{
+  "_comment": "신뢰 소스 등록부(allowlist). '전부 뒤지기'가 아니라 검증된 전문가만. 인기≠신뢰. channel_id는 실제 검증된 것만 기입(추측 금지). handle만 있으면 refresh가 해결.",
+  "_trust_principle": "이 등록부에 오른 소스만 자동 수집한다. 새 소스 추가는 사람이 검증 후 등록(과대광고·사기·펌프 차단).",
+  "sources": [
+    {
+      "domain": "investing",
+      "name": "Patrick Boyle",
+      "handle": "PatrickBoyleOnFinance",
+      "channel_id": "UCASM0cgfkJxQ1ICmRilfHLw",
+      "target_skill": "hedge-quant-strategies",
+      "why": "전직 헤지펀드 매니저·교수, 실증·회의적 관점"
+    },
+    {
+      "domain": "investing",
+      "name": "Ben Felix",
+      "handle": "BenFelixCSI",
+      "channel_id": "UCOErWFfNOQzXsgE7f5S_ULw",
+      "target_skill": "hedge-quant-strategies",
+      "why": "PWL Capital CIO, 증거기반 팩터·인덱스"
+    },
+    {
+      "domain": "investing",
+      "name": "Aswath Damodaran",
+      "handle": "AswathDamodaranonValuation",
+      "channel_id": null,
+      "target_skill": "hedge-quant-strategies",
+      "why": "NYU Stern, 밸류에이션의 정전"
+    },
+    {
+      "domain": "design",
+      "name": "마디아 (Madia)",
+      "handle": "UXUIDesign",
+      "channel_id": "UCS_MM07E49hpuECtlWY-QWw",
+      "target_skill": "madia-uiux-design",
+      "why": "UIUX 디자인 실무 장인"
+    },
+    {
+      "domain": "ai",
+      "name": "Andrej Karpathy",
+      "handle": "AndrejKarpathy",
+      "channel_id": "UCXUPKJO5MZQN11PqgIvyuvQ",
+      "target_skill": "ai-engineering",
+      "why": "ex-Tesla/OpenAI, LLM·신경망 실전 교육"
+    },
+    {
+      "domain": "ai",
+      "name": "Two Minute Papers",
+      "handle": "TwoMinutePapers",
+      "channel_id": "UCbfYPyITQ-7l4upoX8nvctg",
+      "target_skill": "ai-engineering",
+      "why": "AI 논문 요약, 최신 연구 추적"
+    },
+    {
+      "domain": "ai",
+      "name": "3Blue1Brown",
+      "handle": "3blue1brown",
+      "channel_id": "UCYO_jab_esuFRV4b17AJtAw",
+      "target_skill": "ai-engineering",
+      "why": "신경망·수학 직관 시각화(Grant Sanderson)"
+    },
+    {
+      "domain": "ai",
+      "name": "Yannic Kilcher",
+      "handle": "YannicKilcher",
+      "channel_id": "UCZHmQk67mSJgfCCTn7xBfew",
+      "target_skill": "ai-engineering",
+      "why": "ML 논문 심층 리뷰"
+    },
+    {
+      "domain": "ai",
+      "name": "Lex Fridman",
+      "handle": "lexfridman",
+      "channel_id": "UCSHZKyawb77ixDdsGog4iWA",
+      "target_skill": "ai-engineering",
+      "why": "AI 연구자 심층 대담(원 소스 인용에 유의)"
+    },
+    {
+      "domain": "investing",
+      "name": "수페TV (송민섭)",
+      "handle": "supe-tv",
+      "channel_id": "UCfnqgWlC5IvJEAPTmyjaixA",
+      "target_skill": "korea-investing-voices",
+      "why": "미국 ETF·배당·포트폴리오 장기투자, 개인투자자 실전"
+    },
+    {
+      "domain": "investing",
+      "name": "설명왕_테이버 (김태형)",
+      "handle": null,
+      "channel_id": "UCOio3vyYLWiKlHSYRKW-9UA",
+      "target_skill": "korea-investing-voices",
+      "why": "한국 기업분석·시황·트렌드, 15년차 개인투자자"
+    },
+    {
+      "domain": "geopolitics",
+      "name": "GZERO Media (Ian Bremmer)",
+      "handle": "gzeromedia",
+      "channel_id": "UC-8_qAhNVG8G1wxONMnYr3Q",
+      "target_skill": "global-intelligence",
+      "why": "Eurasia Group 창립자, 초당파 지정학 분석"
+    },
+    {
+      "domain": "geopolitics",
+      "name": "Zeihan on Geopolitics",
+      "handle": "zeihanongeopolitics",
+      "channel_id": "UCsy9I56PY3IngCf_VGjunMQ",
+      "target_skill": "global-intelligence",
+      "why": "인구통계·지리 기반 전략 분석틀"
+    },
+    {
+      "domain": "business",
+      "name": "Harvard Business Review",
+      "handle": "harvardbusinessreview",
+      "channel_id": "UCWo4IA01TXzBeGJJKWHOG9g",
+      "target_skill": "global-intelligence",
+      "why": "경영 이론·실무 결합 최고 권위지 공식 채널"
+    },
+    {
+      "domain": "ai",
+      "name": "AI Explained",
+      "handle": "aiexplained-official",
+      "channel_id": "UCNJ1Ymd5yFuUPtn21xtRbbw",
+      "target_skill": "ai-engineering",
+      "why": "자체 벤치마크(SimpleBench), 근거 기반 AI 분석"
+    }
+  ],
+  "manual_only": [
+    {
+      "domain": "any",
+      "platform": "X/Twitter",
+      "note": "X는 이 환경에서 자동 수집 불가(무료 API 폐지·nitter 사망·JS 월). 신뢰 계정(예: @naval, @ID_AA_Carmack 등) 콘텐츠는 사용자가 직접 붙여넣으면 스킬에 반영. 자동 크롤링은 하지 않는다(신뢰·법적 리스크)."
+    }
+  ]
+}
